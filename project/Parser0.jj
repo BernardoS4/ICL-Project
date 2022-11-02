@@ -1,0 +1,125 @@
+PARSER_BEGIN(Parser)
+
+import java.util.Map;
+import java.util.HashMap;
+
+/** ID lister. */
+public class Parser {
+
+  /** Main entry point. */
+  public static void main(String args[]) {
+    Parser parser = new Parser(System.in);
+    ASTNode exp;
+
+    while (true) {
+    try {
+    exp = parser.Start();
+    System.out.println( exp.eval() );
+    } catch (Exception e) {
+      System.out.println ("Syntax Error!");
+      parser.ReInit(System.in);
+    }
+    }
+  }
+
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\r"
+}
+
+TOKEN :
+{
+  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
+  |
+  < Num: (["0"-"9"]) + >
+  |
+  < PLUS : "+" >
+  |
+  < MINUS : "-">
+  |
+  < TIMES : "*">
+  |
+  < DIV : "/">
+  |
+  < LPAR : "(" >
+  |
+  < RPAR : ")" >
+  |
+  < DEF : "def "
+  |
+  < LBRA : "{" >
+  |
+  < RPAR : "}" >
+  |
+  < EQ : "=" >
+  |
+  < SCM : ";" >
+  |
+  < CM : "," >
+  |
+  < EL: "\n" >
+}
+
+ASTNode Start():
+{ ASTNode t; }
+{
+   t = Exp() <EL>
+   { return t; }
+}
+
+ASTNode Exp() :
+{ Token op;
+  ASTNode t1, t2; }
+{
+     t1=Term() ( ( op=<PLUS> | op=<MINUS> ) t2=Term() 
+                 { if (op.kind == PLUS) 
+                         t1 = new ASTPlus(t1,t2);
+                   else  t1 = new ASTSub(t1,t2);
+                 } 
+               ) *
+     { return t1; } 
+}
+
+ASTNode Term() :
+{Token op;
+  ASTNode t1, t2;}
+{
+     t1 = Fact() ( ( op=<TIMES> | op=<DIV> ) t2 = Term() 
+ 		 {
+      if(op.kind == TIMES)
+            t1 = new ASTTimes(t1, t2);
+      else  t1 = new ASTDiv(t1, t2);
+                 } 
+		)?
+     { return t1; } 
+}
+
+
+ASTNode Fact() :
+{ Token n; 
+  ASTNode t;
+  Map m;}
+{
+   ( n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); } 
+    | n=<Id> 	{ t = new ASTId(n.image); }
+    | <LPAR> t=Exp() <RPAR> 
+    | <MINUS> n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); }
+		|	<LBRA> {	m	=	new	HashMap()	}	
+								(	<DEF>	n=<Id> <EQ> t=Exp()	<SCM>	{	m.put(n,t)}	<CM>)	+	
+                t=Exp()
+      <RBRA>
+      <SCM> <SCM>
+					{	return	new	ASTDef(	m,	t	)	}
+   )
+   { return t; }
+}
+
+
+
+
