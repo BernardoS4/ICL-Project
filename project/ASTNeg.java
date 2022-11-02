@@ -1,14 +1,17 @@
 public class ASTNeg {
-    
-        int val;
+
+        private ASTNode exp;
+
+        public ASTNeg(ASTNode n) {
+                exp = n;
+        }
 
         public int eval(Environment e) {
-                return val;
+                int v1 = exp.eval(e);
+                return -v1;
         }
 
-        public ASTNeg(int n) {
-                val = -n;
+        public void compile(CodeBlock c) {
+                c.emit("ineg");
         }
-
-
 }

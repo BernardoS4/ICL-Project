@@ -37,7 +37,7 @@ TOKEN :
 {
   < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
   |
-  < Num: (["0"-"9"]) + >
+  < NUM: (["0"-"9"]) + >
   |
   < PLUS : "+" >
   |
@@ -59,7 +59,7 @@ TOKEN :
   |
   < EQ : "=" >
   |
-  < SCM : ";" >
+  < SCN : ";" >
   |
   < CM : "," >
   |
@@ -104,17 +104,17 @@ ASTNode Term() :
 ASTNode Fact() :
 { Token n; 
   ASTNode t;
-  Map m;}
+  Map<String,ASTNode> m;}
 {
-   ( n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); } 
+   ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
     | n=<Id> 	{ t = new ASTId(n.image); }
     | <LPAR> t=Exp() <RPAR> 
-    | <MINUS> n=<Num> { t = new ASTNum(Integer.parseInt(n.image)); }
+    | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
 		|	<LBRA> {	m	=	new	HashMap()	}	
-								(	<DEF>	n=<Id> <EQ> t=Exp()	<SCM>	{	m.put(n,t)}	<CM>)	+	
+								(	<DEF>	n=<Id> <EQ> t=Exp()	<CM>	{	m.put(n.image,t)}	<CM>)	+	
                 t=Exp()
       <RBRA>
-      <SCM> <SCM>
+      <SCN> <SCN>
 					{	return	new	ASTDef(	m,	t	)	}
    )
    { return t; }
