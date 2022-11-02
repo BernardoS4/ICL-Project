@@ -55,7 +55,7 @@ TOKEN :
   |
   < LBRA : "{" >
   |
-  < RPAR : "}" >
+  < RBRA : "}" >
   |
   < EQ : "=" >
   |
@@ -110,14 +110,10 @@ ASTNode Fact() :
     | n=<Id> 	{ t = new ASTId(n.image); }
     | <LPAR> t=Exp() <RPAR> 
     | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
-		|	<LBRA> {	m	=	new	HashMap()	}	
-								(	<DEF>	n=<Id> <EQ> t=Exp()	<CM>	{	m.put(n.image,t)}	<CM>)	+	
-                t=Exp()
-      <RBRA>
-      <SCN> <SCN>
-					{	return	new	ASTDef(	m,	t	)	}
+		|	<LBRA> {	m	=	new	HashMap();	}	
+								(	<DEF>	n=<Id> <EQ> t=Exp()	(<SCN>)?	{	m.put(n.image,t);})+	<CM>)	+	t=Exp() <RBRA>
+					{	return	new	ASTDef(	m,	t	);	}
    )
-   { return t; }
 }
 
 

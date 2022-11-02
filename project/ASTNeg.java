@@ -1,4 +1,4 @@
-public class ASTNeg {
+public class ASTNeg implements ASTNode {
 
         private ASTNode exp;
 

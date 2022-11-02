@@ -10,4 +10,9 @@ public class ASTNum implements ASTNode {
                 val = n;
         }
 
+        @Override
+        public void compile(CodeBlock code) {
+                code.emit("sipush" + val);
+        }
+
 }

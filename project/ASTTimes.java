@@ -12,4 +12,11 @@ public class ASTTimes implements ASTNode {
         lhs = l;
         rhs = r;
     }
+
+    @Override
+    public void compile(CodeBlock code) {
+       lhs.compile(code);
+       rhs.compile(code);
+       code.emit("imul");
+    }
 }

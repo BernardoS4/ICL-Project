@@ -10,4 +10,10 @@ public class ASTId implements ASTNode {
         return e.find(id);
     }
 
+    @Override
+    public void compile(CodeBlock code) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
