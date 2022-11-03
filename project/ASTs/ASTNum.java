@@ -4,7 +4,7 @@ public class ASTNum implements ASTNode {
 
         int val;
 
-        public int eval(Environment e) {
+        public int eval(Environment<Integer> e) {
                 return val;
         }
 
@@ -13,7 +13,7 @@ public class ASTNum implements ASTNode {
         }
 
         @Override
-        public void compile(CodeBlock code, Environment e) {
+        public void compile(CodeBlock code, Environment<Coordinate> e) {
                 code.emit("sipush" + val);
         }
 

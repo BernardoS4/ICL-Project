@@ -1,21 +1,27 @@
 package ASTs;
 
+import static Utils.Utils.ALOAD_3;
+import static Utils.Utils.ASTORE_3;
+import static Utils.Utils.FIELD_PREFIX;
+import static Utils.Utils.FRAME_PREFIX;
+
 import java.util.Map;
 import java.util.Map.Entry;
+
+import Utils.Utils;
 
 public class ASTDef {
 
     private ASTNode body;
     private Map<String, ASTNode> vars;
-    private static final String FRAME_PREFIX = "frame_";
-    private static final String FIELD_PREFIX = "v";
+    
 
     public ASTDef(ASTNode body, Map<String, ASTNode> vars) {
         this.body = body;
         this.vars = vars;
     }
 
-    public int eval(Environment e) {
+    public int eval(Environment<Integer> e) {
 
         e = e.beginScope();
         int v;
@@ -29,24 +35,28 @@ public class ASTDef {
 
     }
 
-    public void compile(CodeBlock c, Environment env) {
+    public void compile(CodeBlock c, Environment<Coordinate> env) {
         // def x1 = E1 … xn = En in Body end
         env = env.beginScope();
-        String frame = c.gensym(FRAME_PREFIX);
+        int currentLevel = env.depth();
+        String frame = c.gensym(FRAME_PREFIX, currentLevel);
+        String old_frame = c.gensym(FRAME_PREFIX, currentLevel - 1);
         String field;
+        int counter = 0;
         // generate code for frame init and link into RT env
         for (Entry<String, ASTNode> exp : vars.entrySet()) {
-            c.emit("aload 3");
+            c.emit(ALOAD_3);
             exp.getValue().compile(c, env);
-            field = c.gensym(FIELD_PREFIX);
-            c.emit("putfield " + frame + "/" + field);
+            field = c.gensym(FIELD_PREFIX, counter);
+            c.emit(Utils.putFrameVal(frame, field));
             env.assoc(exp.getKey(), new Coordinate(env.depth(), field));
+            counter++;
         }
         body.compile(c, env);
         // generate code for frame pop off
-        c.emit("aload 3");
-        c.emit("getfield " + frame + "/sl" + old_frame);
-        c.emit("astore 3");
+        c.emit(ALOAD_3);
+        c.emit(Utils.changeFrames(frame, old_frame));
+        c.emit(ASTORE_3);
         env.endScope();
     }
 }

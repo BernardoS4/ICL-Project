@@ -10,7 +10,7 @@ public class Compiler {
 
         Parser parser = new Parser(System.in);
         CodeBlock code = new CodeBlock();
-        Environment env = null;
+        Environment<Coordinate> env = null;
 
         while (true) {
             try {

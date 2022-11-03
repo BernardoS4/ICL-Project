@@ -4,7 +4,7 @@ public class ASTSub implements ASTNode {
 
     ASTNode lhs, rhs;
 
-    public int eval(Environment e) {
+    public int eval(Environment<Integer> e) {
         int v1 = lhs.eval(e);
         int v2 = rhs.eval(e);
         return v1 - v2;
@@ -16,7 +16,7 @@ public class ASTSub implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock code, Environment e) {
+    public void compile(CodeBlock code, Environment<Coordinate> e) {
 
         lhs.compile(code, e);
         rhs.compile(code, e);

@@ -17,7 +17,7 @@ public class Parser implements ParserConstants {
   public static void main(String args[]) {
     Parser parser = new Parser(System.in);
     ASTNode exp;
-    Environment e = null;
+    Environment<Integer> e = null;
 
     while (true) {
       try {

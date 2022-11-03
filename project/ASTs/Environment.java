@@ -1,26 +1,25 @@
 package ASTs;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class Environment {
+public class Environment<X> {
 
-    private Environment ancestor;
-    private Map<String, Coordinate> defs;
+    private Environment<X> ancestor;
+    private Map<String, X> defs;
     private int depth = 0;
 
-    public Environment(Environment e) {
+    public Environment(Environment<X> e) {
         this.ancestor = e;
         this.depth = e.depth() + 1;
-        defs = new HashMap<String, Coordinate>();
+        defs = new HashMap<>();
     }
 
-    public Environment beginScope() {
-        return new Environment(this);
+    public Environment<X> beginScope() {
+        return new Environment<X>(this);
     }
 
-    public Environment endScope() {
+    public Environment<X> endScope() {
         return ancestor;
     }
 
@@ -28,11 +27,11 @@ public class Environment {
         return depth;
     }
 
-    public void assoc(String id, Coordinate bind) {
+    public void assoc(String id, X bind) {
         defs.put(id, bind);
     }
 
-    public Coordinate find(String id) {
+    public X find(String id) {
         if (defs.containsKey(id))
             return defs.get(id);
         else if (ancestor != null)

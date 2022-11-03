@@ -4,10 +4,9 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
-class CodeBlock {
+public class CodeBlock {
     private static final String PREAMBULE = " . . . ";
     private static final String POS = " . . . ";
-    private int counter = 0;
 
     List<String> code;
 
@@ -19,8 +18,8 @@ class CodeBlock {
         code.add(opcode);
     }
 
-    public String gensym(String prefix) {
-        return prefix.concat(String.valueOf(counter++));
+    public String gensym(String prefix, int level) {
+        return prefix.concat(String.valueOf(level));
     }
 
     void dump(PrintStream f) {

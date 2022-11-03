@@ -8,12 +8,12 @@ public class ASTNeg implements ASTNode {
                 exp = n;
         }
 
-        public int eval(Environment e) {
+        public int eval(Environment<Integer> e) {
                 int v1 = exp.eval(e);
                 return -v1;
         }
 
-        public void compile(CodeBlock c, Environment e) {
+        public void compile(CodeBlock c, Environment<Coordinate> e) {
                 c.emit("ineg");
         }
 }
