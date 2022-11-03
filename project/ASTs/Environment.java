@@ -1,14 +1,19 @@
+package ASTs;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Environment {
 
     private Environment ancestor;
-    private Map<String, Integer> defs;
+    private Map<String, Coordinate> defs;
+    private int depth = 0;
 
     public Environment(Environment e) {
         this.ancestor = e;
-        defs = new HashMap<String, Integer>();
+        this.depth = e.depth() + 1;
+        defs = new HashMap<String, Coordinate>();
     }
 
     public Environment beginScope() {
@@ -19,11 +24,15 @@ public class Environment {
         return ancestor;
     }
 
-    public void assoc(String id, int val) {
-        defs.put(id, val);
+    public int depth() {
+        return depth;
     }
 
-    public int find(String id) {
+    public void assoc(String id, Coordinate bind) {
+        defs.put(id, bind);
+    }
+
+    public Coordinate find(String id) {
         if (defs.containsKey(id))
             return defs.get(id);
         else if (ancestor != null)

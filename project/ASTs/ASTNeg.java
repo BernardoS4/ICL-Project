@@ -1,3 +1,5 @@
+package ASTs;
+
 public class ASTNeg implements ASTNode {
 
         private ASTNode exp;
@@ -11,7 +13,7 @@ public class ASTNeg implements ASTNode {
                 return -v1;
         }
 
-        public void compile(CodeBlock c) {
+        public void compile(CodeBlock c, Environment e) {
                 c.emit("ineg");
         }
 }

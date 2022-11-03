@@ -1,3 +1,5 @@
+package ASTs;
+
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -5,6 +7,7 @@ import java.util.List;
 class CodeBlock {
     private static final String PREAMBULE = " . . . ";
     private static final String POS = " . . . ";
+    private int counter = 0;
 
     List<String> code;
 
@@ -12,8 +15,12 @@ class CodeBlock {
         code = new LinkedList<String>();
     }
 
-    void emit(String opcode) {
+    public void emit(String opcode) {
         code.add(opcode);
+    }
+
+    public String gensym(String prefix) {
+        return prefix.concat(String.valueOf(counter++));
     }
 
     void dump(PrintStream f) {

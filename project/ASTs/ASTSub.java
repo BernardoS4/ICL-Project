@@ -1,3 +1,5 @@
+package ASTs;
+
 public class ASTSub implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -14,10 +16,10 @@ public class ASTSub implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock code) {
-        
-        lhs.compile(code);
-        rhs.compile(code);
+    public void compile(CodeBlock code, Environment e) {
+
+        lhs.compile(code, e);
+        rhs.compile(code, e);
         code.emit("isub");
     }
 }

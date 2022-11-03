@@ -1,3 +1,5 @@
+package ASTs;
+
 public class ASTDiv implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -14,9 +16,9 @@ public class ASTDiv implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock code) {
-        lhs.compile(code);
-        rhs.compile(code);
+    public void compile(CodeBlock code, Environment e) {
+        lhs.compile(code, e);
+        rhs.compile(code, e);
         code.emit("idiv");
     }
 }

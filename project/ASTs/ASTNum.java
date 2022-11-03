@@ -1,3 +1,5 @@
+package ASTs;
+
 public class ASTNum implements ASTNode {
 
         int val;
@@ -11,7 +13,7 @@ public class ASTNum implements ASTNode {
         }
 
         @Override
-        public void compile(CodeBlock code) {
+        public void compile(CodeBlock code, Environment e) {
                 code.emit("sipush" + val);
         }
 

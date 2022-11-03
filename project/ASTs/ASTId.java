@@ -1,3 +1,5 @@
+package ASTs;
+
 public class ASTId implements ASTNode {
 
     String id;
@@ -11,9 +13,8 @@ public class ASTId implements ASTNode {
     }
 
     @Override
-    public void compile(CodeBlock code) {
+    public void compile(CodeBlock code, Environment e) {
         // TODO Auto-generated method stub
-        
     }
 
 }

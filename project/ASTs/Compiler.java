@@ -1,5 +1,9 @@
+package ASTs;
+
 import java.io.File;
 import java.io.PrintStream;
+
+import Parser.Parser;
 
 public class Compiler {
     public static void main(String args[]) {
@@ -11,7 +15,7 @@ public class Compiler {
         while (true) {
             try {
                 ASTNode ast = parser.Start(env);
-                ast.compile(code);
+                ast.compile(code, env);
                 code.dump(new PrintStream(new File("./BASE-0/Result.txt")));
             } catch (Exception e) {
                 System.out.println("Syntax Error!");
