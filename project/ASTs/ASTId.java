@@ -3,7 +3,6 @@ package ASTs;
 import static Utils.Utils.*;
 import Utils.Utils;
 
-
 public class ASTId implements ASTNode {
 
     String id;
@@ -12,7 +11,7 @@ public class ASTId implements ASTNode {
         this.id = id;
     }
 
-    public int eval(Environment<Integer> e) {
+    public IValue eval(Environment<IValue> e) {
         return e.find(id);
     }
 
@@ -26,8 +25,8 @@ public class ASTId implements ASTNode {
         // generate code to fetch id slot value
         code.emit(ALOAD_3);
         int currentLevel = e.depth();
-        for(int i = level_shift; i > 0; i--) {
-            
+        for (int i = level_shift; i > 0; i--) {
+
             frame = code.gensym(FRAME_PREFIX, currentLevel);
             prev_frame = code.gensym(FRAME_PREFIX, currentLevel - 1);
             code.emit(Utils.changeFrames(frame, prev_frame));

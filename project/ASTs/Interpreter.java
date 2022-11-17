@@ -7,7 +7,7 @@ public class Interpreter {
     public static void main(String args[]) {
         Parser parser = new Parser(System.in);
         ASTNode exp;
-        Environment<Integer> env = null;
+        Environment<IValue> env = null;
 
         while (true) {
             try {
