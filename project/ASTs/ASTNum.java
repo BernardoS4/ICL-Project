@@ -2,14 +2,14 @@ package ASTs;
 
 public class ASTNum implements ASTNode {
 
-        int val;
+        private VInt val;
 
-        public int eval(Environment<Integer> e) {
-                return val;
+        public ASTNum(VInt n) {
+                val = n;
         }
 
-        public ASTNum(int n) {
-                val = n;
+        public VInt eval(Environment<IValue> e) {
+                return val;
         }
 
         @Override

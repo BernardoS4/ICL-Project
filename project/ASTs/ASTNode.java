@@ -2,7 +2,7 @@ package ASTs;
 
 public interface ASTNode {
 
-    int eval(Environment<Integer> e);
+    IValue eval(Environment<IValue> e);
 
     void compile(CodeBlock code, Environment<Coordinate> e);
 }
