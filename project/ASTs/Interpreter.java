@@ -1,6 +1,6 @@
 package ASTs;
 
-import Parser.Parser;
+import parser.Parser;
 
 public class Interpreter {
 
@@ -11,7 +11,7 @@ public class Interpreter {
 
         while (true) {
             try {
-                exp = parser.Start(env);
+                exp = parser.Start();
                 System.out.println(exp.eval(env));
             } catch (Exception e) {
                 System.out.println("Syntax Error!");
