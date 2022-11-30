@@ -5,19 +5,20 @@ import static Utils.Utils.ASTORE_3;
 import static Utils.Utils.FIELD_PREFIX;
 import static Utils.Utils.FRAME_PREFIX;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import Utils.Utils;
 
-public class ASTDef {
+public class ASTDef implements ASTNode {
 
     private ASTNode body;
     private Map<String, ASTNode> vars;
 
-    public ASTDef(ASTNode body, Map<String, ASTNode> vars) {
+    public ASTDef(ASTNode body, Map<String, ASTNode> m) {
         this.body = body;
-        this.vars = vars;
+        this.vars = m;
     }
 
     public IValue eval(Environment<IValue> e) {
