@@ -1,24 +1,12 @@
+PARSER_BEGIN(Parser)
 
+package parser;
+import java.util.Map;
 import java.util.HashMap;
+import ASTs.*;
 
 /** ID lister. */
 public class Parser {
-
-  /** Main entry point. */
-  public static void main(String args[]) {
-    Parser parser = new Parser(System.in);
-    ASTNode exp;
-
-    while (true) {
-    try {
-    exp = parser.Start();
-    System.out.println( exp.eval() );
-    } catch (Exception e) {
-      System.out.println ("Syntax Error!");
-      parser.ReInit(System.in);
-    }
-    }
-  }
 
 }
 
@@ -29,10 +17,27 @@ SKIP :
   " "
 | "\t"
 | "\r"
+| "\n"
 }
 
 TOKEN :
 {
+  <TRUE: "true" >
+  |
+  <FALSE: "false" >
+  |
+  < NEW: "new" >
+  |
+  < IF : "if">
+  |
+  < THEN : "then">
+  |
+  < ELSE : "else">
+  |
+  < WHILE : "while">
+  |
+  < PRINT: "print" >
+  |
   < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
   |
   < NUM: (["0"-"9"]) + >
@@ -49,7 +54,7 @@ TOKEN :
   |
   < RPAR : ")" >
   |
-  < DEF : "def "
+  < DEF : "def ">
   |
   < LBRA : "{" >
   |
@@ -60,12 +65,6 @@ TOKEN :
   < SCN : ";" >
   |
   < CM : "," >
-  |
-  < EL: "\n" >
-  | 
-  <TRUE: "true" >
-  |
-  <FALSE: "false" >
   |
   <AND: "&&" >
   |
@@ -83,14 +82,19 @@ TOKEN :
   |
   <EQUALS: "==" >
   |
+  <DIFF: "~=" >
+  |
   <AFFECTATION: ":=" >
-
+  |
+  < DEREF: "!">
+  |
+  < DOUBLESCN : ";;" >
 }
 
 ASTNode Start():
 { ASTNode t; }
 {
-   t = Exp() <EL>
+   t = Exp() <DOUBLESCN>
    { return t; }
 }
 
@@ -104,7 +108,7 @@ ASTNode Exp() :
                     else
                       t1 = new ASTSub(t1,t2);
                  } 
-               ) *
+               )*
      { return t1; } 
 }
 
@@ -114,7 +118,7 @@ ASTNode Seq() :
 {
      t1=Affect() ( ( op=<SCN> ) t2=Affect() 
                  { t1 = new ASTASeq(t1,t2); } 
-               ) *
+               )*
      { return t1; } 
 }
 
@@ -124,7 +128,7 @@ ASTNode Affect() :
 {
      t1=BoolAdd() ( ( op=<AFFECTATION> ) t2=BoolAdd() 
                  { t1 = new ASTAffect(t1,t2); } 
-               ) *
+               )*
      { return t1; } 
 }
 
@@ -133,13 +137,9 @@ ASTNode BoolAdd() :
 {Token op;
   ASTNode t1, t2;}
 {
-      t1=BoolMul() ( ( op=<NOT> | op=<AND> | op=<OR> ) t2=BoolMul() 
-                  { if (op.kind == NOT) 
-                      t1 = new ASTNot(t1,t2);
-                    if (op.kind == AND) 
-                      t1 = new ASTAnd(t1,t2);
-                    else
-                      t1 = new ASTOr(t1,t2);
+      t1=BoolMul() ( ( op=<OR> ) t2=BoolMul() 
+                  { 
+                    t1 = new ASTOr(t1,t2);
                   } 
                 )*
       { return t1; }
@@ -149,13 +149,13 @@ ASTNode BoolMul() :
 {Token op;
   ASTNode t1, t2;}
 {
-      t1=Rel() ( ( op=<NOT> | op=<AND> | op=<OR> ) t2=Rel() 
-                  { if (op.kind == NOT) 
-                      t1 = new ASTNot(t1,t2);
+      t1=Rel() ( ( op=<EQUALS> | op=<AND> | op=<DIFF> ) t2=Rel() 
+                  { if (op.kind == EQUALS) 
+                      t1 = new ASTEquals(t1,t2);
                     if (op.kind == AND) 
                       t1 = new ASTAnd(t1,t2);
                     else
-                      t1 = new ASTOr(t1,t2);
+                      t1 = new ASTDiff(t1,t2);
                   } 
                 )*
       { return t1; }
@@ -165,17 +165,15 @@ ASTNode Rel() :
 {Token op;
   ASTNode t1, t2;}
 {
-      t1=Exp() ( ( op=<GREATER> | op=<LOWER> | op=<LEQUAL> | op=<GEQUAL> | op=<EQUALS> ) t2=Exp() 
+      t1=Exp() ( ( op=<GREATER> | op=<LOWER> | op=<LEQUAL> | op=<GEQUAL> ) t2=Exp() 
                   { if (op.kind == GREATER) 
                       t1 = new ASTGreater(t1,t2);
                     if (op.kind == LOWER) 
                       t1 = new ASTLower(t1,t2);
                     if (op.kind == LEQUAL) 
                       t1 = new ASTLequal(t1,t2);
-                    if (op.kind == GEQUAL) 
+                    else 
                       t1 = new ASTGequal(t1,t2);
-                    else
-                      t1 = new ASTEquals(t1,t2);
                   } 
                 )?
       { return t1; }
@@ -203,12 +201,17 @@ ASTNode Fact() :
   Map<String,ASTNode> m;}
 {
    ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
-    | n = <TRUE> { t = new AST
     | n=<Id> 	{ t = new ASTId(n.image); }
+    | <TRUE> 
+    | <FALSE> 
+    | <NOT> t=Exp()
+    | <NEW> t=Exp()
+    | <DEREF> t=Exp()
+    | <PRINT> t=Exp()
     | <LPAR> t=Exp() <RPAR> 
     | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
 		|	<LBRA> {	m	=	new	HashMap();	}	
-								(	<DEF>	n=<Id> <EQ> t=Exp()	(<SCN>)?	{	m.put(n.image,t);})+	<CM>)	+	t=Exp() <RBRA>
+								(	<DEF>	n=<Id> <EQ> t=Exp()	(<SCN>)?	{	m.put(n.image,t);}+	<CM>)	+	t=Exp() <RBRA>
 					{	return	new	ASTDef(	m,	t	);	}
    )
 }
