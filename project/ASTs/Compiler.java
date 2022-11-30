@@ -3,7 +3,7 @@ package ASTs;
 import java.io.File;
 import java.io.PrintStream;
 
-import parser.Parser;
+import Parser.Parser;
 
 public class Compiler {
     public static void main(String args[]) {

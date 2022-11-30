@@ -1,6 +1,6 @@
 package ASTs;
 
-import parser.Parser;
+import Parser.Parser;
 
 public class Interpreter {
 
