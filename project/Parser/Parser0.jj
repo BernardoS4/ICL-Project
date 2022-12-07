@@ -202,12 +202,14 @@ ASTNode Fact() :
 {
    ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
     | n=<Id> 	{ t = new ASTId(n.image); }
-    | <TRUE> 
-    | <FALSE> 
+    | n=<TRUE> { t = new ASTTrue(Boolean.parseBoolean(n.image)); }
+    | n=<FALSE> { t = new ASTFalse(Boolean.parseBoolean(n.image)); }
     | <NOT> t=Exp()
     | <NEW> t=Exp()
     | <DEREF> t=Exp()
     | <PRINT> t=Exp()
+    | <IF> t=Exp() <THEN> t=Exp() <ELSE> t=Exp() <SCN>
+    | <WHILE> t=Exp() <>
     | <LPAR> t=Exp() <RPAR> 
     | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
 		|	<LBRA> {	m	=	new	HashMap();	}	
