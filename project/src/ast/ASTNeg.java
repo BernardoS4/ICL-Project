@@ -14,7 +14,7 @@ public class ASTNeg implements ASTNode {
                         int res = -((VInt) v1).getVal();
                         return new VInt(res);
                 }
-                throw new RuntimeException("illegal arguments to / operator");
+                throw new RuntimeException("illegal arguments to neg operation");
         }
 
         public void compile(CodeBlock c, Environment<Coordinate> e) {

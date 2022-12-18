@@ -6,8 +6,13 @@ public class ASTDeref implements ASTNode {
 
     public IValue eval(Environment<IValue> e) {
         IValue v1 = val.eval(e);
-        System.out.println(v1.show());
-        return v1;
+
+        if (v1 instanceof VBool)
+            return new VBool(((VBool) v1).getVal());
+        else if (v1 instanceof VInt)
+            return new VInt(((VInt) v1).getVal());
+        else
+            return new VCell(((VCell) v1).getVal());
     }
 
     public ASTDeref(ASTNode val) {

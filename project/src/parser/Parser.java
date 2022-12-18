@@ -265,7 +265,7 @@ if(op.kind == TIMES)
 }
 
   static final public ASTNode Fact() throws ParseException {Token n;
-  ASTNode t;
+  ASTNode t, t2, t3;
   Map<String,ASTNode> m;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case NUM:{
@@ -324,6 +324,7 @@ t = new ASTNew(t);
     case DEREF:{
       jj_consume_token(DEREF);
       t = Fact();
+t = new ASTDeref(t);
       break;
       }
     case PRINT:{
@@ -334,21 +335,22 @@ t = new ASTNew(t);
     case IF:{
       jj_consume_token(IF);
       t = Seq();
-
       jj_consume_token(LBRA);
-      t = Seq();
+      t2 = Seq();
       jj_consume_token(RBRA);
       jj_consume_token(LBRA);
-      t = Seq();
+      t3 = Seq();
       jj_consume_token(RBRA);
+t =     new     ASTIf(t, t2, t3);
       break;
       }
     case WHILE:{
       jj_consume_token(WHILE);
       t = Seq();
       jj_consume_token(LBRA);
-      t = Seq();
+      t2 = Seq();
       jj_consume_token(RBRA);
+t =     new     ASTWhile(t, t2);
       break;
       }
     case LBRA:{
@@ -372,7 +374,7 @@ m.put(n.image,t);
           break label_7;
         }
       }
-      t = Exp();
+      t = Seq();
       jj_consume_token(RBRA);
 t =     new     ASTDef(m, t);
       break;

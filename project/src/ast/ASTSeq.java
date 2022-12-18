@@ -7,7 +7,6 @@ public class ASTSeq implements ASTNode {
     public IValue eval(Environment<IValue> e) {
         lhs.eval(e);
         IValue v2 = rhs.eval(e);
-
         return v2;
     }
 

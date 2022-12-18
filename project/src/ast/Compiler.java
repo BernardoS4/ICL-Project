@@ -19,6 +19,7 @@ public class Compiler {
                 code.dump(new PrintStream(new File("./BASE-0/Result.txt")));
             } catch (Exception e) {
                 System.out.println("Syntax Error!");
+                e.printStackTrace();
                 parser.ReInit(System.in);
             }
         }

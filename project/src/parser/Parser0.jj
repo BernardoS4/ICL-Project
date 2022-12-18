@@ -205,7 +205,7 @@ ASTNode Term() :
 
 ASTNode Fact() :
 { Token n; 
-  ASTNode t;
+  ASTNode t, t2, t3;
   Map<String,ASTNode> m;}
 {
    ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
@@ -215,12 +215,12 @@ ASTNode Fact() :
     | <MINUS> t=Fact() { t = new ASTNeg(t); }
     | <NOT> t=Fact() { t = new ASTNot(t);} 
     | <NEW> t=Fact() { t = new ASTNew(t);} 
-    | <DEREF> t=Fact()
+    | <DEREF> t=Fact() { t = new ASTDeref(t);}
     | <PRINT> t=Fact()
-    | <IF> t=Seq() { } <LBRA> t = Seq() <RBRA> <LBRA> t = Seq() <RBRA>
-    | <WHILE> t=Seq() <LBRA> t = Seq() <RBRA>
+    | <IF> t=Seq() <LBRA> t2=Seq() <RBRA> <LBRA> t3=Seq() <RBRA> {	t =	new	ASTIf(t, t2, t3);	}
+    | <WHILE> t=Seq() <LBRA> t2 = Seq() <RBRA> {	t =	new	ASTWhile(t, t2);	}
 		|	<LBRA> {	m	=	new	HashMap();	}	
-								(	<LET>	n=<Id> <EQ> t=Exp()	<SCN>	{	m.put(n.image,t);} )	+	t=Exp() <RBRA>
+								(	<LET>	n=<Id> <EQ> t=Exp()	<SCN>	{	m.put(n.image,t);} )	+	t=Seq() <RBRA>
 					{	t =	new	ASTDef(m, t);	}
   )
     { return t; } 
