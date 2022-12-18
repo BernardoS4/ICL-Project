@@ -1,16 +1,15 @@
 package ASTs;
 
-public class ASTPrint implements ASTNode {
+public class ASTNew implements ASTNode {
 
     ASTNode val;
 
     public IValue eval(Environment<IValue> e) {
-        IValue v1 = val.eval(e);
-        System.out.println(v1.show());
-        return v1;
+        IValue v = val.eval(e);
+        return new VCell(v);
     }
 
-    public ASTPrint(ASTNode val) {
+    public ASTNew(ASTNode val) {
         this.val = val;
     }
 
