@@ -10,7 +10,7 @@ public class ASTNot implements ASTNode {
         if (v1 instanceof VBool) {
             return new VBool(!((VBool) v1).getVal());
         }
-        throw new RuntimeException("illegal arguments to / operator");
+        throw new RuntimeException("illegal arguments to ~ operator");
     }
 
     public ASTNot(ASTNode val) {
@@ -20,6 +20,8 @@ public class ASTNot implements ASTNode {
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
         val.compile(code, e);
-        code.emit("");
+        code.emit("ifeq L1");
+        code.emit("sipush 0");
+        code.emit("L1: sipush 1");
     }
 }

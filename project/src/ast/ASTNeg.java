@@ -14,10 +14,11 @@ public class ASTNeg implements ASTNode {
                         int res = -((VInt) v1).getVal();
                         return new VInt(res);
                 }
-                throw new RuntimeException("illegal arguments to neg operation");
+                throw new RuntimeException("illegal arguments to - operator");
         }
 
         public void compile(CodeBlock c, Environment<Coordinate> e) {
+                exp.compile(c, e);
                 c.emit("ineg");
         }
 }

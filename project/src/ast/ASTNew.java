@@ -15,7 +15,14 @@ public class ASTNew implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        // falta o type
+        code.emit("new ref_of_type");
+        code.emit("dup");
+        // falta type
+        code.emit("invokespecial ref_of_" + "type" + "/<init>()V");
+        code.emit("dup");
         val.compile(code, e);
-        code.emit("");
+        // falta type e typeJ
+        code.emit("putfield ref_of_" + "type" + "/ v " + "typeJ");
     }
 }

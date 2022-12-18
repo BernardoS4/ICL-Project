@@ -25,6 +25,6 @@ public class ASTOr implements ASTNode {
     public void compile(CodeBlock code, Environment<Coordinate> e) {
         lhs.compile(code, e);
         rhs.compile(code, e);
-        code.emit("");
+        code.emit("ior");
     }
 }
