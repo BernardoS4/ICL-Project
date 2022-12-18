@@ -102,18 +102,18 @@ ASTNode Seq() :
 { Token op;
   ASTNode t1, t2; }
 {
-     t1=Affect() ( ( op=<SCN> ) t2=Affect() 
+     t1=Assign() ( ( op=<SCN> ) t2=Assign() 
                  { t1 = new ASTSeq(t1,t2); } 
                )*
      { return t1; } 
 }
 
-ASTNode Affect() :
+ASTNode Assign() :
 { Token op;
   ASTNode t1, t2; }
 {
      t1=BoolAdd() ( ( op=<AFFECTATION> ) t2=BoolAdd() 
-                 { t1 = new ASTAffect(t1,t2); } 
+                 { t1 = new ASTAssign(t1,t2); } 
                )*
      { return t1; } 
 }
