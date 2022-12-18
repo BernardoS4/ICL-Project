@@ -1,0 +1,226 @@
+PARSER_BEGIN(Parser)
+
+package parser;
+import java.util.Map;
+import java.util.HashMap;
+import ast.*;
+
+/** ID lister. */
+public class Parser {
+
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\r"
+| "\n"
+}
+
+TOKEN :
+{
+  <TRUE: "true" >
+  |
+  <FALSE: "false" >
+  |
+  < NEW: "new" >
+  |
+  < IF : "if">
+  |
+  < THEN : "then">
+  |
+  < ELSE : "else">
+  |
+  < WHILE : "while">
+  |
+  < PRINT: "print" >
+  |
+  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
+  |
+  < NUM: (["0"-"9"]) + >
+  |
+  < PLUS : "+" >
+  |
+  < MINUS : "-">
+  |
+  < TIMES : "*">
+  |
+  < DIV : "/">
+  |
+  < LPAR : "(" >
+  |
+  < RPAR : ")" >
+  |
+  < DEF : "def ">
+  |
+  < LBRA : "{" >
+  |
+  < RBRA : "}" >
+  |
+  < EQ : "=" >
+  |
+  < SCN : ";" >
+  |
+  < CM : "," >
+  |
+  <AND: "&&" >
+  |
+  <OR: "||" >
+  |
+  <GREATER: ">" >
+  |
+  <LOWER: "<" >
+  |
+  <NOT: "~" >
+  |
+  <LEQUAL: "<=" >
+  |
+  <GEQUAL: ">=" >
+  |
+  <EQUALS: "==" >
+  |
+  <DIFF: "~=" >
+  |
+  <AFFECTATION: ":=" >
+  |
+  < DEREF: "!">
+  |
+  < DOUBLESCN : ";;" >
+}
+
+ASTNode Start():
+{ ASTNode t; }
+{
+   t = Seq() <DOUBLESCN>
+   { return t; }
+}
+
+ASTNode Seq() :
+{ Token op;
+  ASTNode t1, t2; }
+{
+     t1=Affect() ( ( op=<SCN> ) t2=Affect() 
+                 { t1 = new ASTSeq(t1,t2); } 
+               )*
+     { return t1; } 
+}
+
+ASTNode Affect() :
+{ Token op;
+  ASTNode t1, t2; }
+{
+     t1=BoolAdd() ( ( op=<AFFECTATION> ) t2=BoolAdd() 
+                 { t1 = new ASTAffect(t1,t2); } 
+               )*
+     { return t1; } 
+}
+
+ASTNode BoolAdd() :
+{Token op;
+  ASTNode t1, t2;}
+{
+      t1=BoolMul() ( ( op=<OR> ) t2=BoolMul() 
+                  { 
+                    t1 = new ASTOr(t1,t2);
+                  } 
+                )*
+      { return t1; }
+}
+
+ASTNode BoolMul() :
+{Token op;
+  ASTNode t1, t2;}
+{
+      t1=EqMult() ( op=<AND>  t2=EqMult() 
+                  
+                {t1 = new ASTAnd(t1,t2);}
+                    
+                )*
+      { return t1; }
+}
+
+ASTNode EqMult() :
+{Token op;
+  ASTNode t1, t2;}
+{
+      t1=Rel() ( ( op=<EQUALS> | op=<DIFF> ) t2=Rel() 
+                  { if (op.kind == EQUALS) 
+                      t1 = new ASTEqual(t1,t2);
+                    else
+                      t1 = new ASTDiff(t1,t2);
+                  } 
+                )*
+      { return t1; }
+}
+
+ASTNode Rel() :
+{Token op;
+  ASTNode t1, t2;}
+{
+      t1=Exp() ( ( op=<GREATER> | op=<LOWER> | op=<LEQUAL> | op=<GEQUAL> ) t2=Exp() 
+                  { if (op.kind == GREATER) 
+                      t1 = new ASTGreater(t1,t2);
+                    if (op.kind == LOWER) 
+                      t1 = new ASTLower(t1,t2);
+                    if (op.kind == LEQUAL) 
+                      t1 = new ASTLequals(t1,t2);
+                    else 
+                      t1 = new ASTGequals(t1,t2);
+                  } 
+                )?
+      { return t1; }
+}
+
+ASTNode Exp() :
+{ Token op;
+  ASTNode t1, t2; }
+{
+     t1=Term() ( ( op=<PLUS> | op=<MINUS> ) t2=Term() 
+                 { if (op.kind == PLUS) 
+                         t1 = new ASTPlus(t1,t2);
+                    else
+                      t1 = new ASTSub(t1,t2);
+                 } 
+               )*
+     { return t1; } 
+}
+
+ASTNode Term() :
+{Token op;
+  ASTNode t1, t2;}
+{
+     t1 = Fact() ( ( op=<TIMES> | op=<DIV> ) t2 = Term() 
+ 		 {
+      if(op.kind == TIMES)
+            t1 = new ASTTimes(t1, t2);
+      else  t1 = new ASTDiv(t1, t2);
+                 } 
+		)?
+     { return t1; } 
+}
+
+
+ASTNode Fact() :
+{ Token n; 
+  ASTNode t;
+  Map<String,ASTNode> m;}
+{
+   ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
+    | n=<Id> 	{ t = new ASTId(n.image); }
+    | (n=<TRUE> | n=<FALSE>) { t = new ASTTrue(Boolean.parseBoolean(n.image)); }
+    | <LPAR> t=Exp() <RPAR> 
+    | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
+    | <NOT> t=Fact() { t = new ASTNot(t);} 
+    | <NEW> t=Fact()
+    | <DEREF> t=Fact()
+    | <PRINT> t=Fact()
+    | <IF> t=Seq() <LBRA> t = Seq() <RBRA> <LBRA> t = Seq() <RBRA>
+    | <WHILE> t=Seq() <LBRA> t = Seq() <RBRA>
+		|	<LBRA> {	m	=	new	HashMap();	}	
+								(	<DEF>	n=<Id> <EQ> t=Exp()	<SCN>	{	m.put(n.image,t);} )	+	t=Exp() <RBRA>
+					{	return	new	ASTDef(	m,	t	);	}
+    )
+}
