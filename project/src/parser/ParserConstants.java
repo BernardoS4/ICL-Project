@@ -43,7 +43,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int RPAR = 20;
   /** RegularExpression Id. */
-  int DEF = 21;
+  int LET = 21;
   /** RegularExpression Id. */
   int LBRA = 22;
   /** RegularExpression Id. */
@@ -105,7 +105,7 @@ public interface ParserConstants {
     "\"/\"",
     "\"(\"",
     "\")\"",
-    "\"def \"",
+    "\"let \"",
     "\"{\"",
     "\"}\"",
     "\"=\"",

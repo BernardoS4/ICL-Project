@@ -318,6 +318,7 @@ t = new ASTNot(t);
     case NEW:{
       jj_consume_token(NEW);
       t = Fact();
+t = new ASTNew(t);
       break;
       }
     case DEREF:{
@@ -354,14 +355,14 @@ t = new ASTNot(t);
 m       =       new     HashMap();
       label_7:
       while (true) {
-        jj_consume_token(DEF);
+        jj_consume_token(LET);
         n = jj_consume_token(Id);
         jj_consume_token(EQ);
         t = Exp();
         jj_consume_token(SCN);
 m.put(n.image,t);
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case DEF:{
+        case LET:{
           ;
           break;
           }

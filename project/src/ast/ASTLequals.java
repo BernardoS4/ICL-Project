@@ -13,7 +13,7 @@ public class ASTLequals implements ASTNode {
                 return new VBool(((VInt) v1).getVal() <= ((VInt) v2).getVal());
             }
         }
-        throw new RuntimeException("illegal arguments to / operator");
+        throw new RuntimeException("illegal arguments to <= operator");
     }
 
     public ASTLequals(ASTNode l, ASTNode r) {
