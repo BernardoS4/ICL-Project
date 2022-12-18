@@ -9,14 +9,14 @@ public class Environment<X> {
     private Map<String, X> defs;
     private int depth = 0;
 
-    public Environment(Environment<X> e) {
+    public Environment(Environment<X> e, int depth) {
         this.ancestor = e;
-        this.depth = e.depth() + 1;
+        this.depth = depth + 1;
         defs = new HashMap<>();
     }
 
     public Environment<X> beginScope() {
-        return new Environment<X>(this);
+        return new Environment<X>(this, depth);
     }
 
     public Environment<X> endScope() {

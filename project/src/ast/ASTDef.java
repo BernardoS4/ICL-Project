@@ -31,7 +31,6 @@ public class ASTDef implements ASTNode {
         v = body.eval(e);
         e.endScope();
         return v;
-
     }
 
     public void compile(CodeBlock c, Environment<Coordinate> env) {

@@ -175,9 +175,9 @@ if (op.kind == EQUALS)
       t2 = Exp();
 if (op.kind == GREATER)
                       t1 = new ASTGreater(t1,t2);
-                    if (op.kind == LOWER)
+                    else if (op.kind == LOWER)
                       t1 = new ASTLower(t1,t2);
-                    if (op.kind == LEQUAL)
+                    else if (op.kind == LEQUAL)
                       t1 = new ASTLequals(t1,t2);
                     else
                       t1 = new ASTGequals(t1,t2);
@@ -299,14 +299,14 @@ t = new ASTBool(Boolean.parseBoolean(n.image));
       }
     case LPAR:{
       jj_consume_token(LPAR);
-      t = Exp();
+      t = Seq();
       jj_consume_token(RPAR);
       break;
       }
     case MINUS:{
       jj_consume_token(MINUS);
-      n = jj_consume_token(NUM);
-t = new ASTNum(Integer.parseInt(n.image));
+      t = Fact();
+t = new ASTNeg(t);
       break;
       }
     case NOT:{
@@ -334,6 +334,7 @@ t = new ASTNew(t);
     case IF:{
       jj_consume_token(IF);
       t = Seq();
+
       jj_consume_token(LBRA);
       t = Seq();
       jj_consume_token(RBRA);
@@ -373,7 +374,7 @@ m.put(n.image,t);
       }
       t = Exp();
       jj_consume_token(RBRA);
-t =     new     ASTDef( m,      t       );
+t =     new     ASTDef(m, t);
       break;
       }
     default:

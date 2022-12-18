@@ -163,9 +163,9 @@ ASTNode Rel() :
       t1=Exp() ( ( op=<GREATER> | op=<LOWER> | op=<LEQUAL> | op=<GEQUAL> ) t2=Exp() 
                   { if (op.kind == GREATER) 
                       t1 = new ASTGreater(t1,t2);
-                    if (op.kind == LOWER) 
+                    else if (op.kind == LOWER) 
                       t1 = new ASTLower(t1,t2);
-                    if (op.kind == LEQUAL) 
+                    else if (op.kind == LEQUAL) 
                       t1 = new ASTLequals(t1,t2);
                     else 
                       t1 = new ASTGequals(t1,t2);
@@ -211,8 +211,8 @@ ASTNode Fact() :
    ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
     | n=<Id> 	{ t = new ASTId(n.image); }
     | (n=<TRUE> | n=<FALSE>) { t = new ASTBool(Boolean.parseBoolean(n.image)); }
-    | <LPAR> t=Exp() <RPAR> 
-    | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
+    | <LPAR> t=Seq() <RPAR> 
+    | <MINUS> t=Fact() { t = new ASTNeg(t); }
     | <NOT> t=Fact() { t = new ASTNot(t);} 
     | <NEW> t=Fact() { t = new ASTNew(t);} 
     | <DEREF> t=Fact()
@@ -221,7 +221,7 @@ ASTNode Fact() :
     | <WHILE> t=Seq() <LBRA> t = Seq() <RBRA>
 		|	<LBRA> {	m	=	new	HashMap();	}	
 								(	<LET>	n=<Id> <EQ> t=Exp()	<SCN>	{	m.put(n.image,t);} )	+	t=Exp() <RBRA>
-					{	t =	new	ASTDef(	m,	t	);	}
+					{	t =	new	ASTDef(m, t);	}
   )
     { return t; } 
 }

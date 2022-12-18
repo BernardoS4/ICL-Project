@@ -8,7 +8,7 @@ public class VCell implements IValue {
         this.v = v0;
     }
 
-    public IValue get() {
+    public IValue getVal() {
         return v;
     }
 
