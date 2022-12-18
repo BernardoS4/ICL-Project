@@ -221,6 +221,7 @@ ASTNode Fact() :
     | <WHILE> t=Seq() <LBRA> t = Seq() <RBRA>
 		|	<LBRA> {	m	=	new	HashMap();	}	
 								(	<DEF>	n=<Id> <EQ> t=Exp()	<SCN>	{	m.put(n.image,t);} )	+	t=Exp() <RBRA>
-					{	return	new	ASTDef(	m,	t	);	}
+					{	t =	new	ASTDef(	m,	t	);	}
     )
+    { return t; } 
 }

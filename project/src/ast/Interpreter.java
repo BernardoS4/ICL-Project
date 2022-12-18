@@ -12,7 +12,7 @@ public class Interpreter {
         while (true) {
             try {
                 exp = parser.Start();
-                System.out.println(exp.eval(env));
+                System.out.println(exp.eval(env).show());
             } catch (Exception e) {
                 System.out.println("Syntax Error!");
                 parser.ReInit(System.in);
