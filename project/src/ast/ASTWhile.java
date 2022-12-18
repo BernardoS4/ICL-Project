@@ -26,12 +26,10 @@ public class ASTWhile implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        code.emit("L1: ");
-        // aqui nao ta bem
-        // supostamente o lhs.compile eh dentro do L1
-        // lhs.compile(code, e);
+        code.emit("L1:");
+        cond.compile(code, e);
         code.emit("ifeq L2");
-        // rhs.compile(code, e);
+        exp.compile(code, e);
         code.emit("pop");
         code.emit("goto L1");
         code.emit("L2:");

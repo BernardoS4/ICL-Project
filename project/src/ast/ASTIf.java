@@ -26,9 +26,9 @@ public class ASTIf implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        lhs.compile(code, e);
+        cond.compile(code, e);
         code.emit("ifeq L1");
-        rhs.compile(code, e);
+        lhs.compile(code, e);
         code.emit("goto L2");
         code.emit("L1:");
         rhs.compile(code, e);
