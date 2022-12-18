@@ -210,7 +210,7 @@ ASTNode Fact() :
 {
    ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
     | n=<Id> 	{ t = new ASTId(n.image); }
-    | (n=<TRUE> | n=<FALSE>) { t = new ASTTrue(Boolean.parseBoolean(n.image)); }
+    | (n=<TRUE> | n=<FALSE>) { t = new ASTBool(Boolean.parseBoolean(n.image)); }
     | <LPAR> t=Exp() <RPAR> 
     | <MINUS> n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); }
     | <NOT> t=Fact() { t = new ASTNot(t);} 

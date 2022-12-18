@@ -1,7 +1,5 @@
 package ast;
 
-import Types.IType;
-
 public interface ASTNode {
 
     IValue eval(Environment<IValue> e);

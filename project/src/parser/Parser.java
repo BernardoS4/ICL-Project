@@ -294,7 +294,7 @@ t = new ASTId(n.image);
         jj_consume_token(-1);
         throw new ParseException();
       }
-t = new ASTTrue(Boolean.parseBoolean(n.image));
+t = new ASTBool(Boolean.parseBoolean(n.image));
       break;
       }
     case LPAR:{

@@ -1,10 +1,10 @@
 package ast;
 
-public class ASTTrue implements ASTNode {
+public class ASTBool implements ASTNode {
 
         private boolean val;
 
-        public ASTTrue(boolean n) {
+        public ASTBool(boolean n) {
                 val = n;
         }
 
