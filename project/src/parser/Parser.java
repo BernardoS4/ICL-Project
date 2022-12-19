@@ -330,6 +330,7 @@ t = new ASTDeref(t);
     case PRINT:{
       jj_consume_token(PRINT);
       t = Fact();
+t = new ASTPrint(t);
       break;
       }
     case IF:{
