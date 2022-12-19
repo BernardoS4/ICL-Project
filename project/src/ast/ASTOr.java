@@ -1,5 +1,10 @@
 package ast;
 
+import Types.IType;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTOr implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -13,7 +18,7 @@ public class ASTOr implements ASTNode {
                 return new VBool(((VBool) v1).getVal() || ((VBool) v2).getVal());
             }
         }
-        throw new RuntimeException("illegal arguments to / operator");
+        throw new RuntimeException(argumentError("||"));
     }
 
     public ASTOr(ASTNode l, ASTNode r) {
@@ -26,5 +31,15 @@ public class ASTOr implements ASTNode {
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("ior");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = lhs.typecheck(e);
+        IType v2 = rhs.typecheck(e);
+        if (v1.equals(v2)) {
+            return v1;
+        }
+        throw new RuntimeException(typeError("||"));
     }
 }

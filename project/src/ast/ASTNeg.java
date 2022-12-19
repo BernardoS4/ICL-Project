@@ -1,5 +1,11 @@
 package ast;
 
+import Types.IType;
+import Types.TypeInt;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTNeg implements ASTNode {
 
         private ASTNode exp;
@@ -14,11 +20,20 @@ public class ASTNeg implements ASTNode {
                         int res = -((VInt) v1).getVal();
                         return new VInt(res);
                 }
-                throw new RuntimeException("illegal arguments to - operator");
+                throw new RuntimeException(argumentError("-"));
         }
 
         public void compile(CodeBlock c, Environment<Coordinate> e) {
                 exp.compile(c, e);
                 c.emit("ineg");
+        }
+
+        @Override
+        public IType typecheck(Environment<IType> e) {
+                IType v1 = exp.typecheck(e);
+                if (v1 instanceof TypeInt)
+                        return v1;
+
+                throw new RuntimeException(typeError("-"));
         }
 }

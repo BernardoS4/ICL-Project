@@ -1,5 +1,11 @@
 package ast;
 
+import Types.IType;
+import Types.TypeInt;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTSub implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -12,7 +18,7 @@ public class ASTSub implements ASTNode {
                 return new VInt(((VInt) v1).getVal() - ((VInt) v2).getVal());
             }
         }
-        throw new RuntimeException("illegal arguments to - operator");
+        throw new RuntimeException(argumentError("-"));
     }
 
     public ASTSub(ASTNode l, ASTNode r) {
@@ -26,5 +32,16 @@ public class ASTSub implements ASTNode {
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("isub");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = lhs.typecheck(e);
+        if (v1 instanceof TypeInt) {
+            IType v2 = rhs.typecheck(e);
+            if (v2 instanceof TypeInt)
+                return v1;
+        }
+        throw new RuntimeException(typeError("-"));
     }
 }

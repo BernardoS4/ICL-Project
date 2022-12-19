@@ -1,5 +1,12 @@
 package ast;
 
+import Types.IType;
+import Types.TypeBool;
+import Types.TypeInt;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTAssign implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -17,12 +24,39 @@ public class ASTAssign implements ASTNode {
             ((VCell) v1).set(v2);
             return v2;
         }
-        throw new RuntimeException("illegal arguments to := operator");
+        throw new RuntimeException(argumentError(":="));
     }
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        IType type = typecheck(new Environment<IType>());
+        String refType = "";
+        String typeJ = "";
+        if (type instanceof TypeInt) {
+            refType = "int";
+            typeJ = "I";
+
+        } else if (type instanceof TypeBool) {
+            refType = "bool";
+            typeJ = "Z";
+        }
+
         lhs.compile(code, e);
         rhs.compile(code, e);
+        code.emit("putfield ref_" + refType + "/v" + typeJ);
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = lhs.typecheck(e);
+        IType v2 = rhs.typecheck(e);
+
+        if (v1 instanceof TypeInt && v2 instanceof TypeInt)
+            return v1;
+
+        if (v1 instanceof TypeBool && v2 instanceof TypeBool)
+            return v2;
+
+        throw new RuntimeException(typeError(":="));
     }
 }

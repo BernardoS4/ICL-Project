@@ -1,5 +1,8 @@
 package ast;
 
+import Types.IType;
+import Types.TypeInt;
+
 public class ASTNum implements ASTNode {
 
         private int val;
@@ -15,6 +18,11 @@ public class ASTNum implements ASTNode {
         @Override
         public void compile(CodeBlock code, Environment<Coordinate> e) {
                 code.emit("sipush" + val);
+        }
+
+        @Override
+        public IType typecheck(Environment<IType> e) {
+                return null;
         }
 
 }

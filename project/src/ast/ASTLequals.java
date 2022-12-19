@@ -1,5 +1,11 @@
 package ast;
 
+import Types.IType;
+import Types.TypeBool;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTLequals implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -13,7 +19,7 @@ public class ASTLequals implements ASTNode {
                 return new VBool(((VInt) v1).getVal() <= ((VInt) v2).getVal());
             }
         }
-        throw new RuntimeException("illegal arguments to <= operator");
+        throw new RuntimeException(argumentError("<="));
     }
 
     public ASTLequals(ASTNode l, ASTNode r) {
@@ -31,5 +37,16 @@ public class ASTLequals implements ASTNode {
         code.emit("goto L2");
         code.emit("L1: sipush 1");
         code.emit("L2:");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = lhs.typecheck(e);
+        if (v1 instanceof TypeBool) {
+            IType v2 = rhs.typecheck(e);
+            if (v2 instanceof TypeBool)
+                return v1;
+        }
+        throw new RuntimeException(typeError("<="));
     }
 }

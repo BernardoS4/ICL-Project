@@ -1,5 +1,10 @@
 package ast;
 
+import Types.IType;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTEqual implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -14,7 +19,7 @@ public class ASTEqual implements ASTNode {
         else if (v1 instanceof VInt && v2 instanceof VInt)
             return new VBool(((VInt) v1).getVal() == ((VInt) v2).getVal());
 
-        throw new RuntimeException("illegal arguments to == operator");
+        throw new RuntimeException(argumentError("=="));
     }
 
     public ASTEqual(ASTNode l, ASTNode r) {
@@ -32,5 +37,15 @@ public class ASTEqual implements ASTNode {
         code.emit("goto L2");
         code.emit("L1: sipush 1");
         code.emit("L2:");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = lhs.typecheck(e);
+        IType v2 = rhs.typecheck(e);
+        if (v1.equals(v2)) {
+            return v1;
+        }
+        throw new RuntimeException(typeError("=="));
     }
 }

@@ -1,5 +1,10 @@
 package ast;
 
+import Types.IType;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTAnd implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -13,7 +18,7 @@ public class ASTAnd implements ASTNode {
                 return new VBool(((VBool) v1).getVal() && ((VBool) v2).getVal());
             }
         }
-        throw new RuntimeException("illegal arguments to && operator");
+        throw new RuntimeException(argumentError("&&"));
     }
 
     public ASTAnd(ASTNode l, ASTNode r) {
@@ -23,8 +28,19 @@ public class ASTAnd implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        typecheck(new Environment<IType>());
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("iand");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = lhs.typecheck(e);
+        IType v2 = rhs.typecheck(e);
+        if (v1.equals(v2)) {
+            return v1;
+        }
+        throw new RuntimeException(typeError("&&"));
     }
 }

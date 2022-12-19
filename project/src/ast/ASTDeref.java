@@ -1,5 +1,12 @@
 package ast;
 
+import Types.IType;
+import Types.TypeBool;
+import Types.TypeInt;
+import Types.TypeRef;
+
+import static Utils.Utils.typeError;
+
 public class ASTDeref implements ASTNode {
 
     ASTNode val;
@@ -21,7 +28,29 @@ public class ASTDeref implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        IType type = typecheck(new Environment<IType>());
+        String refType = "";
+        String typeJ = "";
+        if (type instanceof TypeInt) {
+            refType = "int";
+            typeJ = "I";
+
+        } else if (type instanceof TypeBool) {
+            refType = "bool";
+            typeJ = "Z";
+        }
         val.compile(code, e);
-        code.emit("");
+        code.emit("getfield ref_of_" + refType + "/v " + typeJ);
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = val.typecheck(e);
+
+        if (v1 instanceof TypeRef) {
+            IType refType = ((TypeRef) v1).getVal();
+            return refType;
+        }
+        throw new RuntimeException(typeError("!"));
     }
 }

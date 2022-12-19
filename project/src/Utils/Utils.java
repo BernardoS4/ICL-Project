@@ -1,8 +1,7 @@
 package Utils;
 
-
 public class Utils {
-    
+
     /**
      * 
      */
@@ -25,7 +24,6 @@ public class Utils {
     public static final String SLASH = "/";
     public static final String SL = "/sl";
 
-
     public static String putFrameVal(String frame, String field) {
         return PUT_FIELD + frame + SLASH + field;
     }
@@ -36,5 +34,13 @@ public class Utils {
 
     public static String getFieldVal(String old_frame, String valId) {
         return GET_FIELD + old_frame + valId;
+    }
+
+    public static String argumentError(String operator) {
+        return "illegal arguments to " + operator + " operator";
+    }
+
+    public static String typeError(String operator) {
+        return "illegal arguments types to " + operator + " operator";
     }
 }

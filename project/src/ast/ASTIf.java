@@ -1,5 +1,11 @@
 package ast;
 
+import Types.IType;
+import Types.TypeBool;
+
+import static Utils.Utils.argumentError;
+import static Utils.Utils.typeError;
+
 public class ASTIf implements ASTNode {
 
     ASTNode cond, lhs, rhs;
@@ -21,7 +27,7 @@ public class ASTIf implements ASTNode {
                 v2 = rhs.eval(e);
             return v2;
         }
-        throw new RuntimeException("illegal arguments to if operation");
+        throw new RuntimeException(argumentError("if"));
     }
 
     @Override
@@ -33,5 +39,14 @@ public class ASTIf implements ASTNode {
         code.emit("L1:");
         rhs.compile(code, e);
         code.emit("L2:");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = cond.typecheck(e);
+        if (v1 instanceof TypeBool)
+            return v1;
+
+        throw new RuntimeException(typeError("if"));
     }
 }

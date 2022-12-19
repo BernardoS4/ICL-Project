@@ -1,5 +1,8 @@
 package ast;
 
+import Types.IType;
+import Types.TypeBool;
+
 public class ASTWhile implements ASTNode {
 
     ASTNode cond, exp;
@@ -33,6 +36,15 @@ public class ASTWhile implements ASTNode {
         code.emit("pop");
         code.emit("goto L1");
         code.emit("L2:");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = cond.typecheck(e);
+        if (v1 instanceof TypeBool)
+            return v1;
+
+        throw new RuntimeException("illegal arguments types to while operator");
     }
 
 }

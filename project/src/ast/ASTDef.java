@@ -8,6 +8,7 @@ import static Utils.Utils.FRAME_PREFIX;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import Types.IType;
 import Utils.Utils;
 
 public class ASTDef implements ASTNode {
@@ -34,6 +35,7 @@ public class ASTDef implements ASTNode {
     }
 
     public void compile(CodeBlock c, Environment<Coordinate> env) {
+        typecheck(new Environment<IType>());
         // def x1 = E1 … xn = En in Body end
         env = env.beginScope();
         int currentLevel = env.depth();
@@ -56,5 +58,11 @@ public class ASTDef implements ASTNode {
         c.emit(Utils.changeFrames(frame, old_frame));
         c.emit(ASTORE_3);
         env.endScope();
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

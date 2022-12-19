@@ -1,6 +1,8 @@
 package ast;
 
 import static Utils.Utils.*;
+
+import Types.IType;
 import Utils.Utils;
 
 public class ASTId implements ASTNode {
@@ -34,6 +36,12 @@ public class ASTId implements ASTNode {
         }
         String valId = c.getId();
         code.emit(Utils.getFieldVal(prev_frame, valId));
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -1,5 +1,7 @@
 package ast;
 
+import Types.IType;
+
 public class ASTSeq implements ASTNode {
 
     ASTNode lhs, rhs;
@@ -20,5 +22,11 @@ public class ASTSeq implements ASTNode {
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("");
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
