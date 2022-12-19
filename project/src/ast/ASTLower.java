@@ -12,17 +12,10 @@ public class ASTLower implements ASTNode {
 
     public IValue eval(Environment<IValue> e) {
         IValue v1 = lhs.eval(e);
-        IValue v2;
 
         if (v1 instanceof VInt) {
-            v2 = rhs.eval(e);
+            IValue v2 = rhs.eval(e);
             if (v2 instanceof VInt) {
-                return new VBool(((VInt) v1).getVal() < ((VInt) v2).getVal());
-            }
-        } else if (v1 instanceof VCell) {
-            v2 = rhs.eval(e);
-            v1 = ((VCell) v1).getVal();
-            if (v1 instanceof VInt && v2 instanceof VInt) {
                 return new VBool(((VInt) v1).getVal() < ((VInt) v2).getVal());
             }
         }
