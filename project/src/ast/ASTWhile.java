@@ -14,15 +14,14 @@ public class ASTWhile implements ASTNode {
 
     public IValue eval(Environment<IValue> e) {
         IValue v1 = cond.eval(e);
+        IValue v2 = v1;
 
         if (v1 instanceof VBool) {
-            IValue v2;
             while (((VBool) v1).getVal()) {
                 v2 = exp.eval(e);
-                System.out.println(v2.show());
                 v1 = cond.eval(e);
             }
-            return v1;
+            return v2;
         }
         throw new RuntimeException("illegal arguments to while operation");
     }
