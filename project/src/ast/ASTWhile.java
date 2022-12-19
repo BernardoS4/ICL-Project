@@ -41,6 +41,7 @@ public class ASTWhile implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = cond.typecheck(e);
+        exp.typecheck(e);
         if (v1 instanceof TypeBool)
             return v1;
 
