@@ -21,14 +21,12 @@ public class ASTDeref implements ASTNode {
         if (v1 instanceof VCell) {
             return ((VCell) v1).getVal();
         }
-
         throw new RuntimeException("illegal arguments to ! operator");
-
     }
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        IType type = typecheck(new Environment<IType>());
+        IType type = typecheck(new Environment<IType>(null, 0));
         String refType = "";
         String typeJ = "";
         if (type instanceof TypeInt) {

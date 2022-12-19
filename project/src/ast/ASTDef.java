@@ -35,7 +35,7 @@ public class ASTDef implements ASTNode {
     }
 
     public void compile(CodeBlock c, Environment<Coordinate> env) {
-        typecheck(new Environment<IType>());
+        typecheck(new Environment<IType>(null, 0));
         // def x1 = E1 … xn = En in Body end
         env = env.beginScope();
         int currentLevel = env.depth();

@@ -9,6 +9,11 @@ public class ASTDiff implements ASTNode {
 
     ASTNode lhs, rhs;
 
+    public ASTDiff(ASTNode l, ASTNode r) {
+        lhs = l;
+        rhs = r;
+    }
+
     public IValue eval(Environment<IValue> e) {
         IValue v1 = lhs.eval(e);
         IValue v2 = rhs.eval(e);
@@ -22,13 +27,9 @@ public class ASTDiff implements ASTNode {
         throw new RuntimeException(argumentError("~="));
     }
 
-    public ASTDiff(ASTNode l, ASTNode r) {
-        lhs = l;
-        rhs = r;
-    }
-
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        typecheck(new Environment<IType>(null, 0));
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("isub");

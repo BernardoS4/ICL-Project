@@ -1,8 +1,6 @@
 package ast;
 
 import Types.IType;
-import Types.TypeBool;
-import Types.TypeInt;
 
 public class ASTPrint implements ASTNode {
 
@@ -19,6 +17,7 @@ public class ASTPrint implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        typecheck(new Environment<IType>(null, 0));
         code.emit("getstatic java/lang/System.out Ljava/io/PrintStream");
         val.compile(code, e);
         code.emit("invokestatic java/lang/String/valueOf(I)Ljava/lang/String");
@@ -28,9 +27,6 @@ public class ASTPrint implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = val.typecheck(e);
-        if (v1 instanceof TypeInt || v1 instanceof TypeBool) {
-            return v1;
-        }
-        throw new RuntimeException("illegal arguments types to print operator");
+        return v1;
     }
 }

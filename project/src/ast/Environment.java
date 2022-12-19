@@ -15,9 +15,6 @@ public class Environment<X> {
         defs = new HashMap<>();
     }
 
-    public Environment() {
-    }
-
     public Environment<X> beginScope() {
         return new Environment<X>(this, depth);
     }

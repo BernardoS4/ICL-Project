@@ -19,12 +19,6 @@ public class ASTPlus implements ASTNode {
                         if (v2 instanceof VInt) {
                                 return new VInt(((VInt) v1).getVal() + ((VInt) v2).getVal());
                         }
-                } else if (v1 instanceof VCell) {
-                        v2 = rhs.eval(e);
-                        v1 = ((VCell) v1).getVal();
-                        if (v1 instanceof VInt && v2 instanceof VInt) {
-                                return new VInt(((VInt) v1).getVal() + ((VInt) v2).getVal());
-                        }
                 }
                 throw new RuntimeException(argumentError("+"));
 
@@ -37,7 +31,7 @@ public class ASTPlus implements ASTNode {
 
         @Override
         public void compile(CodeBlock code, Environment<Coordinate> e) {
-
+                typecheck(new Environment<IType>(null, 0));
                 lhs.compile(code, e);
                 rhs.compile(code, e);
                 code.emit("iadd");

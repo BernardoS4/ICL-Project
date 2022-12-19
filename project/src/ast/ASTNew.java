@@ -3,10 +3,13 @@ package ast;
 import Types.IType;
 import Types.TypeBool;
 import Types.TypeInt;
+import Types.TypeRef;
 
 public class ASTNew implements ASTNode {
 
     private ASTNode val;
+    private String refType = "";
+    private String typeJ = "";
 
     public ASTNew(ASTNode val) {
         this.val = val;
@@ -19,18 +22,7 @@ public class ASTNew implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        IType type = typecheck(new Environment<IType>());
-        String refType = "";
-        String typeJ = "";
-        if (type instanceof TypeInt) {
-            refType = "int";
-            typeJ = "I";
-
-        } else if (type instanceof TypeBool) {
-            refType = "bool";
-            typeJ = "Z";
-        }
-
+        typecheck(new Environment<IType>(null, 0));
         code.emit("new ref_of_" + refType);
         code.emit("dup");
         code.emit("invokespecial ref_of_" + refType + "/<init>()V");
@@ -42,9 +34,30 @@ public class ASTNew implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = val.typecheck(e);
-        if (v1 instanceof TypeInt || v1 instanceof TypeBool) {
-            return v1;
+        if (v1 instanceof TypeBool) {
+            refType += "bool";
+            typeJ += "Z";
+        } else if (v1 instanceof TypeInt) {
+            refType += "int";
+            typeJ = "I";
+        } else {
+            refType += "ref_of_";
+            typeJ += "Lref_of_";
+            v1 = ((TypeRef) v1).getVal();
+
+            while (v1 instanceof TypeRef) {
+                refType += "ref_of_";
+                typeJ += "Lref_of_";
+                v1 = ((TypeRef) v1).getVal();
+            }
+            if (v1 instanceof TypeInt) {
+                refType += "int";
+                typeJ += "int";
+            } else {
+                refType += "bool";
+                typeJ += "bool";
+            }
         }
-        throw new RuntimeException("illegal arguments types to new operator");
+        return v1;
     }
 }

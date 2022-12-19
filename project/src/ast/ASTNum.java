@@ -22,7 +22,7 @@ public class ASTNum implements ASTNode {
 
         @Override
         public IType typecheck(Environment<IType> e) {
-                return null;
+                return new TypeInt(val);
         }
 
 }

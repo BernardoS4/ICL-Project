@@ -17,13 +17,12 @@ public class ASTBool implements ASTNode {
 
         @Override
         public void compile(CodeBlock code, Environment<Coordinate> e) {
-                typecheck(new Environment<IType>());
+                typecheck(new Environment<IType>(null, 0));
                 code.emit("sipush" + val);
         }
 
         @Override
         public IType typecheck(Environment<IType> e) {
-
-                return null;
+                return new TypeBool(val);
         }
 }

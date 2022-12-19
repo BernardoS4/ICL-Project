@@ -40,7 +40,6 @@ public class ASTId implements ASTNode {
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        // TODO Auto-generated method stub
         return null;
     }
 

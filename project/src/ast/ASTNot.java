@@ -25,6 +25,7 @@ public class ASTNot implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
+        typecheck(new Environment<IType>(null, 0));
         val.compile(code, e);
         code.emit("ifeq L1");
         code.emit("sipush 0");

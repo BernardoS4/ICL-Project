@@ -3,6 +3,7 @@ package ast;
 import Types.IType;
 import Types.TypeBool;
 import Types.TypeInt;
+import Types.TypeRef;
 
 import static Utils.Utils.argumentError;
 import static Utils.Utils.typeError;
@@ -29,7 +30,7 @@ public class ASTAssign implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        IType type = typecheck(new Environment<IType>());
+        IType type = typecheck(new Environment<IType>(null, 0));
         String refType = "";
         String typeJ = "";
         if (type instanceof TypeInt) {
@@ -40,7 +41,6 @@ public class ASTAssign implements ASTNode {
             refType = "bool";
             typeJ = "Z";
         }
-
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("putfield ref_" + refType + "/v" + typeJ);
@@ -49,13 +49,9 @@ public class ASTAssign implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = lhs.typecheck(e);
-        IType v2 = rhs.typecheck(e);
 
-        if (v1 instanceof TypeInt && v2 instanceof TypeInt)
-            return v1;
-
-        if (v1 instanceof TypeBool && v2 instanceof TypeBool)
-            return v2;
+        if (v1 instanceof TypeRef)
+            return ((TypeRef) v1).getVal();
 
         throw new RuntimeException(typeError(":="));
     }

@@ -24,6 +24,7 @@ public class ASTNeg implements ASTNode {
         }
 
         public void compile(CodeBlock c, Environment<Coordinate> e) {
+                typecheck(new Environment<IType>(null, 0));
                 exp.compile(c, e);
                 c.emit("ineg");
         }
