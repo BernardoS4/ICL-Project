@@ -2,8 +2,8 @@ package ast;
 
 import java.io.File;
 import java.io.PrintStream;
-
-import parser.Parser;
+import static ast.Utils.MAIN_START_CODE;
+import static ast.Utils.MAIN_END_CODE;
 
 public class Compiler {
     public static void main(String args[]) {
@@ -15,8 +15,13 @@ public class Compiler {
         while (true) {
             try {
                 ASTNode ast = parser.Start();
+                PrintStream ps = new PrintStream(
+                        new File("/Users/nedzero/Documents/GitHub/ICL-Project/project/src/Result.j"));
+                code.emit(MAIN_START_CODE);
                 ast.compile(code, env);
-                code.dump(new PrintStream(new File("./BASE-0/Result.txt")));
+                code.emit(MAIN_END_CODE);
+                code.dump(ps);
+
             } catch (Exception e) {
                 System.out.println("Syntax Error!");
                 e.printStackTrace();

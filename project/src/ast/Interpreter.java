@@ -1,7 +1,5 @@
 package ast;
 
-import parser.Parser;
-
 public class Interpreter {
 
     public static void main(String args[]) {

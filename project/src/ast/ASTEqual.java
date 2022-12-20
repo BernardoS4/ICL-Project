@@ -1,9 +1,7 @@
 package ast;
 
-import Types.IType;
-
-import static Utils.Utils.argumentError;
-import static Utils.Utils.typeError;
+import static ast.Utils.argumentError;
+import static ast.Utils.typeError;
 
 public class ASTEqual implements ASTNode {
 

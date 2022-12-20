@@ -1,9 +1,6 @@
 package ast;
 
-import static Utils.Utils.*;
-
-import Types.IType;
-import Utils.Utils;
+import static ast.Utils.*;
 
 public class ASTId implements ASTNode {
 

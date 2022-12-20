@@ -1,4 +1,4 @@
-package Types;
+package ast;
 
 public class TypeBool implements IType {
 
@@ -16,5 +16,5 @@ public class TypeBool implements IType {
     public String toStr() {
         return v.toString();
     }
-    
+
 }

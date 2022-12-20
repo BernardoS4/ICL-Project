@@ -1,10 +1,7 @@
 package ast;
 
-import Types.IType;
-import Types.TypeBool;
-
-import static Utils.Utils.argumentError;
-import static Utils.Utils.typeError;
+import static ast.Utils.argumentError;
+import static ast.Utils.typeError;
 
 public class ASTIf implements ASTNode {
 

@@ -1,8 +1,5 @@
 package ast;
 
-import Types.IType;
-import Types.TypeBool;
-
 public class ASTWhile implements ASTNode {
 
     ASTNode cond, exp;

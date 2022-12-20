@@ -1,11 +1,6 @@
 package ast;
 
-import Types.IType;
-import Types.TypeBool;
-import Types.TypeInt;
-import Types.TypeRef;
-
-import static Utils.Utils.typeError;
+import static ast.Utils.typeError;
 
 public class ASTDeref implements ASTNode {
 

@@ -1,8 +1,5 @@
 package ast;
 
-import Types.IType;
-import Types.TypeBool;
-
 public class ASTBool implements ASTNode {
 
         private boolean val;

@@ -1,10 +1,5 @@
 package ast;
 
-import Types.IType;
-import Types.TypeBool;
-import Types.TypeInt;
-import Types.TypeRef;
-
 public class ASTNew implements ASTNode {
 
     private ASTNode val;

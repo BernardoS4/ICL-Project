@@ -1,5 +1,4 @@
-package Types;
-
+package ast;
 
 public class TypeInt implements IType {
 
@@ -17,5 +16,5 @@ public class TypeInt implements IType {
     public String toStr() {
         return Integer.toString(v);
     }
-    
+
 }

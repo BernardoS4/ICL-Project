@@ -1,15 +1,12 @@
 package ast;
 
-import static Utils.Utils.ALOAD_3;
-import static Utils.Utils.ASTORE_3;
-import static Utils.Utils.FIELD_PREFIX;
-import static Utils.Utils.FRAME_PREFIX;
+import static ast.Utils.ALOAD_3;
+import static ast.Utils.ASTORE_3;
+import static ast.Utils.FIELD_PREFIX;
+import static ast.Utils.FRAME_PREFIX;
 
 import java.util.Map;
 import java.util.Map.Entry;
-
-import Types.IType;
-import Utils.Utils;
 
 public class ASTDef implements ASTNode {
 

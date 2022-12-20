@@ -1,4 +1,4 @@
-package Types;
+package ast;
 
 public class TypeRef implements IType {
 
@@ -16,5 +16,5 @@ public class TypeRef implements IType {
     public String toStr() {
         return v.toString();
     }
-    
+
 }

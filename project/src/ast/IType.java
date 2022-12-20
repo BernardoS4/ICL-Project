@@ -1,4 +1,4 @@
-package Types;
+package ast;
 
 public interface IType {
 

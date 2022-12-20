@@ -1,7 +1,5 @@
 package ast;
 
-import Types.IType;
-
 public class ASTSeq implements ASTNode {
 
     ASTNode lhs, rhs;

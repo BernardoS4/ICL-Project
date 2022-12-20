@@ -23,11 +23,9 @@ public class CodeBlock {
     }
 
     void dump(PrintStream f) {
-        f.println(PREAMBULE);
         for (String line : code) {
             f.println(line);
             System.out.println(line);
         }
-        f.println(POS);
     }
 }
