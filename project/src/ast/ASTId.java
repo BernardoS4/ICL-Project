@@ -37,7 +37,7 @@ public class ASTId implements ASTNode {
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        return null;
+        return e.find(id);
     }
 
 }

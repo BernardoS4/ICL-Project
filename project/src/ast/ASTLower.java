@@ -26,16 +26,15 @@ public class ASTLower implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("isub");
-        code.emit("iflt L1");
+        code.emit("iflt L13");
         code.emit("sipush 0");
-        code.emit("goto L2");
-        code.emit("L1:");
+        code.emit("goto L14");
+        code.emit("L13:");
         code.emit("sipush 1");
-        code.emit("L2:");
+        code.emit("L14:");
     }
 
     @Override

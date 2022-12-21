@@ -25,23 +25,26 @@ public class ASTWhile implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
-        code.emit("L1:");
+        code.emit("L17:");
         cond.compile(code, e);
-        code.emit("ifeq L2");
+        code.emit("ifeq L18");
         exp.compile(code, e);
         code.emit("pop");
-        code.emit("goto L1");
-        code.emit("L2:");
+        code.emit("goto L17");
+        code.emit("L18:");
     }
 
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = cond.typecheck(e);
-        exp.typecheck(e);
-        if (v1 instanceof TypeBool)
-            return v1;
-
+        IType v2 = v1;
+        if (v1 instanceof TypeBool) {
+            while (((TypeBool) v1).getVal()) {
+                v2 = exp.typecheck(e);
+                v1 = cond.typecheck(e);
+            }
+            return v2;
+        }
         throw new RuntimeException("illegal arguments types to while operator");
     }
 

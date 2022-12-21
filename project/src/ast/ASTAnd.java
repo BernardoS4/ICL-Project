@@ -26,7 +26,6 @@ public class ASTAnd implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("iand");
@@ -37,7 +36,7 @@ public class ASTAnd implements ASTNode {
         IType v1 = lhs.typecheck(e);
         IType v2 = rhs.typecheck(e);
         if (v1 instanceof TypeBool && v2 instanceof TypeBool) {
-            return v1;
+            return new TypeBool(((TypeBool) v1).getVal() && ((TypeBool) v2).getVal());
         }
         throw new RuntimeException(typeError("&&"));
     }

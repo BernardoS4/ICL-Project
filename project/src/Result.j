@@ -18,13 +18,13 @@ getstatic java/lang/System/out Ljava/io/PrintStream;
 aconst_null
 astore_3
 ; START
-sipush 1
-ifeq L1
-sipush 0
-goto L2
-L1:
-sipush 1
-L2:
+sipush 2
+sipush 2
+imul
+pop
+sipush 9
+sipush 9
+imul
 ; END
 ; convert to String;
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
