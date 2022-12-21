@@ -44,7 +44,7 @@ public class ASTGreater implements ASTNode {
         if (v1 instanceof TypeInt) {
             IType v2 = rhs.typecheck(e);
             if (v2 instanceof TypeInt)
-                return v1;
+                return new TypeBool(((TypeInt) v1).getVal() > ((TypeInt) v2).getVal());
         }
         throw new RuntimeException(typeError(">"));
     }

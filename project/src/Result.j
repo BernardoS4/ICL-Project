@@ -19,8 +19,6 @@ aconst_null
 astore_3
 ; START
 sipush 1
-sipush 1
-isub
 ifeq L1
 sipush 0
 goto L2
