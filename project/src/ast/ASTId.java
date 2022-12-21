@@ -19,7 +19,7 @@ public class ASTId implements ASTNode {
         Coordinate c = e.find(id);
         int level_shift = e.depth() - c.getLevel();
         String frame = "";
-        String prev_frame = "";
+        String prev_frame = level_shift == 0 ? code.gensym(FRAME_PREFIX, e.depth()) : "";
 
         // generate code to fetch id slot value
         code.emit(ALOAD_3);

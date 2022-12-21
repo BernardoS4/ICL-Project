@@ -40,20 +40,21 @@ public class ASTDef implements ASTNode {
         String old_frame = c.gensym(FRAME_PREFIX, currentLevel - 1);
         String field;
         int counter = 0;
-        // generate code for frame init and link into RT env
+
         for (Entry<String, ASTNode> exp : vars.entrySet()) {
             c.emit(ALOAD_3);
             exp.getValue().compile(c, env);
             field = c.gensym(FIELD_PREFIX, counter);
             c.emit(Utils.putFrameVal(frame, field));
             env.assoc(exp.getKey(), new Coordinate(env.depth(), field));
-            counter++;
+            // counter++;
         }
+
         body.compile(c, env);
-        // generate code for frame pop off
-        c.emit(ALOAD_3);
-        c.emit(Utils.changeFrames(frame, old_frame));
-        c.emit(ASTORE_3);
+        // c.emit(ALOAD_3);
+        // c.emit(Utils.changeFrames(frame, old_frame));
+        // c.emit(ASTORE_3);
+
         env.endScope();
     }
 

@@ -18,9 +18,11 @@ getstatic java/lang/System/out Ljava/io/PrintStream;
 aconst_null
 astore_3
 ; START
-sipush 1
-sipush 1
-iand
+aload_3
+sipush 2
+putfield frame_0/v0 I
+aload_3
+getfield frame_0/v0 I
 ; END
 ; convert to String;
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;

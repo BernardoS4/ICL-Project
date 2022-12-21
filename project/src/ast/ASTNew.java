@@ -23,7 +23,7 @@ public class ASTNew implements ASTNode {
         code.emit("invokespecial ref_of_" + refType + "/<init>()V");
         code.emit("dup");
         val.compile(code, e);
-        code.emit("putfield ref_of_" + refType + "/ v " + typeJ);
+        code.emit("putfield ref_of_" + refType + "/v " + typeJ);
     }
 
     @Override

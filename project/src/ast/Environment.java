@@ -7,11 +7,11 @@ public class Environment<X> {
 
     private Environment<X> ancestor;
     private Map<String, X> defs;
-    private int depth = 0;
+    private int depth;
 
     public Environment(Environment<X> e, int depth) {
         this.ancestor = e;
-        this.depth = depth + 1;
+        this.depth = depth;
         defs = new HashMap<>();
     }
 

@@ -43,18 +43,18 @@ public class Utils {
     /**
      * 
      */
-    public static final String ALOAD_3 = "aload 3";
-    public static final String ASTORE_3 = "astore 3";
+    public static final String ALOAD_3 = "aload_3";
+    public static final String ASTORE_3 = "astore_3";
     public static final String PUT_FIELD = "putfield ";
     public static final String GET_FIELD = "getfield ";
 
     public static final String FRAME_PREFIX = "frame_";
     public static final String FIELD_PREFIX = "v";
     public static final String SLASH = "/";
-    public static final String SL = "/sl";
+    public static final String SL = "/sl ";
 
     public static String putFrameVal(String frame, String field) {
-        return PUT_FIELD + frame + SLASH + field;
+        return PUT_FIELD + frame + SLASH + field + " I";
     }
 
     public static String changeFrames(String frame, String old_frame) {
@@ -62,7 +62,7 @@ public class Utils {
     }
 
     public static String getFieldVal(String old_frame, String valId) {
-        return GET_FIELD + old_frame + valId;
+        return GET_FIELD + old_frame + "/" + valId + " I";
     }
 
     public static String argumentError(String operator) {
