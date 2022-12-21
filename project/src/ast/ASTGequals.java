@@ -33,7 +33,8 @@ public class ASTGequals implements ASTNode {
         code.emit("ifge L1");
         code.emit("sipush 0");
         code.emit("goto L2");
-        code.emit("L1: sipush 1");
+        code.emit("L1:");
+        code.emit("sipush 1");
         code.emit("L2:");
     }
 

@@ -34,7 +34,8 @@ public class ASTDiff implements ASTNode {
         code.emit("ifne L1");
         code.emit("sipush 0");
         code.emit("goto L2");
-        code.emit("L1: sipush 1");
+        code.emit("L1:");
+        code.emit("sipush 1");
         code.emit("L2:");
     }
 
@@ -42,9 +43,10 @@ public class ASTDiff implements ASTNode {
     public IType typecheck(Environment<IType> e) {
         IType v1 = lhs.typecheck(e);
         IType v2 = rhs.typecheck(e);
-        if (v1.equals(v2)) {
+        if (v1 instanceof TypeBool && v2 instanceof TypeBool)
             return v1;
-        }
+        else if (v1 instanceof TypeInt && v2 instanceof TypeInt)
+            return v1;
         throw new RuntimeException(typeError("~="));
     }
 }

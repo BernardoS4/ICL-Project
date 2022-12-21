@@ -1,9 +1,9 @@
 PARSER_BEGIN(Parser)
 
-package parser;
+package ast;
 import java.util.Map;
 import java.util.HashMap;
-import ast.*;
+
 
 /** ID lister. */
 public class Parser {

@@ -36,7 +36,7 @@ public class ASTAnd implements ASTNode {
     public IType typecheck(Environment<IType> e) {
         IType v1 = lhs.typecheck(e);
         IType v2 = rhs.typecheck(e);
-        if (v1.equals(v2) && v1 instanceof TypeBool) {
+        if (v1 instanceof TypeBool && v2 instanceof TypeBool) {
             return v1;
         }
         throw new RuntimeException(typeError("&&"));

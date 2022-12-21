@@ -15,7 +15,8 @@ public class ASTBool implements ASTNode {
         @Override
         public void compile(CodeBlock code, Environment<Coordinate> e) {
                 typecheck(new Environment<IType>(null, 0));
-                code.emit("sipush" + val);
+                int v = (val) ? 1 : 0;
+                code.emit("sipush " + v);
         }
 
         @Override
