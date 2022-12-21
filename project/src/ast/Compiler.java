@@ -18,7 +18,7 @@ public class Compiler {
             try {
                 ASTNode ast = parser.Start();
                 PrintStream ps = new PrintStream(
-                        new File(bennyPath));
+                        new File(alexPath));
                 code.emit(MAIN_START_CODE);
                 ast.compile(code, env);
                 code.emit(MAIN_END_CODE);

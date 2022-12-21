@@ -5,9 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CodeBlock {
-    private static final String PREAMBULE = " . . . ";
-    private static final String POS = " . . . ";
-
     List<String> code;
 
     public CodeBlock() {

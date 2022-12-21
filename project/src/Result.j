@@ -20,13 +20,7 @@ astore_3
 ; START
 sipush 1
 sipush 1
-isub
-ifeq L1
-sipush 0
-goto L2
-L1:
-sipush 1
-L2:
+iand
 ; END
 ; convert to String;
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
