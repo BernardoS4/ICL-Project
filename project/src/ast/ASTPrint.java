@@ -15,13 +15,11 @@ public class ASTPrint implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         val.compile(code, e);
     }
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        IType v1 = val.typecheck(e);
-        return v1;
+        return val.typecheck(e);
     }
 }

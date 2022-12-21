@@ -11,6 +11,7 @@ public class Compiler {
         Parser parser = new Parser(System.in);
         CodeBlock code = new CodeBlock();
         Environment<Coordinate> env = new Environment<>(null, 0);
+        Environment<IType> e = new Environment<>(null, 0);
         String bennyPath = "C:\\Users\\berna\\OneDrive\\Documentos\\GitHub\\ICL-Project\\project\\src\\Result.j";
         String alexPath = "/Users/nedzero/Documents/GitHub/ICL-Project/project/src/Result.j";
 
@@ -20,13 +21,14 @@ public class Compiler {
                 PrintStream ps = new PrintStream(
                         new File(alexPath));
                 code.emit(MAIN_START_CODE);
+                ast.typecheck(e);
                 ast.compile(code, env);
                 code.emit(MAIN_END_CODE);
                 code.dump(ps);
 
-            } catch (Exception e) {
+            } catch (Exception exep) {
                 System.out.println("Syntax Error!");
-                e.printStackTrace();
+                exep.printStackTrace();
                 parser.ReInit(System.in);
             }
         }

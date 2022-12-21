@@ -25,7 +25,7 @@ public class ASTAssign implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        IType type = typecheck(new Environment<IType>(null, 0));
+        IType type = typecheck(new Environment<>(null, 0));
         String refType = "";
         String typeJ = "";
         if (type instanceof TypeInt) {
@@ -44,10 +44,10 @@ public class ASTAssign implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = lhs.typecheck(e);
-
-        if (v1 instanceof TypeRef)
-            return ((TypeRef) v1).getVal();
-
+        if (v1 instanceof TypeRef) {
+            IType v2 = rhs.typecheck(e);
+            return v2;
+        }
         throw new RuntimeException(typeError(":="));
     }
 }

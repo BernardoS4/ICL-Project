@@ -28,7 +28,6 @@ public class ASTPlus implements ASTNode {
 
         @Override
         public void compile(CodeBlock code, Environment<Coordinate> e) {
-                typecheck(new Environment<IType>(null, 0));
                 lhs.compile(code, e);
                 rhs.compile(code, e);
                 code.emit("iadd");

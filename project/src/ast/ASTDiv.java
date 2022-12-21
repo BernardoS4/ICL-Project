@@ -25,7 +25,6 @@ public class ASTDiv implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("idiv");
@@ -37,7 +36,7 @@ public class ASTDiv implements ASTNode {
         if (v1 instanceof TypeInt) {
             IType v2 = rhs.typecheck(e);
             if (v2 instanceof TypeInt)
-                return v1;
+                return new TypeInt(((TypeInt) v1).getVal() / ((TypeInt) v2).getVal());
         }
         throw new RuntimeException(typeError("/"));
     }

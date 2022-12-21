@@ -29,21 +29,24 @@ public class ASTIf implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         cond.compile(code, e);
-        code.emit("ifeq L1");
+        code.emit("ifeq L9");
         lhs.compile(code, e);
-        code.emit("goto L2");
-        code.emit("L1:");
+        code.emit("goto L10");
+        code.emit("L9:");
         rhs.compile(code, e);
-        code.emit("L2:");
+        code.emit("L10:");
     }
 
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = cond.typecheck(e);
-        if (v1 instanceof TypeBool)
-            return v1;
+        if (v1 instanceof TypeBool) {
+            if (((TypeBool) v1).getVal()) {
+                return lhs.typecheck(e);
+            } else
+                return rhs.typecheck(e);
+        }
 
         throw new RuntimeException(typeError("if"));
     }

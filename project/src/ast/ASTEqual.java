@@ -7,6 +7,11 @@ public class ASTEqual implements ASTNode {
 
     ASTNode lhs, rhs;
 
+    public ASTEqual(ASTNode l, ASTNode r) {
+        lhs = l;
+        rhs = r;
+    }
+
     public IValue eval(Environment<IValue> e) {
         IValue v1 = lhs.eval(e);
         IValue v2 = rhs.eval(e);
@@ -20,23 +25,17 @@ public class ASTEqual implements ASTNode {
         throw new RuntimeException(argumentError("=="));
     }
 
-    public ASTEqual(ASTNode l, ASTNode r) {
-        lhs = l;
-        rhs = r;
-    }
-
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("isub");
-        code.emit("ifeq L1");
+        code.emit("ifeq L3");
         code.emit("sipush 0");
-        code.emit("goto L2");
-        code.emit("L1:");
+        code.emit("goto L4");
+        code.emit("L3:");
         code.emit("sipush 1");
-        code.emit("L2:");
+        code.emit("L4:");
     }
 
     @Override
@@ -44,7 +43,7 @@ public class ASTEqual implements ASTNode {
         IType v1 = lhs.typecheck(e);
         IType v2 = rhs.typecheck(e);
         if (v1 instanceof TypeBool && v2 instanceof TypeBool)
-            return v1;
+            return new TypeBool(((TypeBool) v1).getVal() == ((TypeBool) v2).getVal());
         else if (v1 instanceof TypeInt && v2 instanceof TypeInt)
             return new TypeBool(((TypeInt) v1).getVal() == ((TypeInt) v2).getVal());
         throw new RuntimeException(typeError("=="));

@@ -26,16 +26,15 @@ public class ASTLequals implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        typecheck(new Environment<IType>(null, 0));
         lhs.compile(code, e);
         rhs.compile(code, e);
         code.emit("isub");
-        code.emit("ifle L1");
+        code.emit("ifle L11");
         code.emit("sipush 0");
-        code.emit("goto L2");
-        code.emit("L1:");
+        code.emit("goto L12");
+        code.emit("L11:");
         code.emit("sipush 1");
-        code.emit("L2:");
+        code.emit("L12:");
     }
 
     @Override
