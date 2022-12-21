@@ -1,6 +1,6 @@
-.class public ref_int
+.class public ref_of_int
 .super java/lang/Object
-.field public value I
+.field public v I
 .method public <init>()V
 	aload_0
 	invokenonvirtual java/lang/Object/<init>()V

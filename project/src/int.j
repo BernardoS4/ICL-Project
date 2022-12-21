@@ -1,7 +1,6 @@
-.class public frame_0
+.class public int
 .super java/lang/Object
-.field public sl Ljava/lang/Object;
-.field public v0 Ljava/lang/Object;
+.field public v I
 .method public <init>()V
 aload_0
 invokenonvirtual java/lang/Object/<init>()V

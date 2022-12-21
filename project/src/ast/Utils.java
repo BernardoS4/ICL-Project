@@ -1,5 +1,9 @@
 package ast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 public class Utils {
 
     public static final String MAIN_START_CODE = ".class public Main\n" +
@@ -31,6 +35,8 @@ public class Utils {
             "return\n" +
             ".end method\n";
 
+    public static final String genericPath = "/Users/nedzero/Documents/GitHub/ICL-Project/project/src/";
+
     /**
      * 
      */
@@ -51,10 +57,10 @@ public class Utils {
     public static final String FRAME_PREFIX = "frame_";
     public static final String FIELD_PREFIX = "v";
     public static final String SLASH = "/";
-    public static final String SL = "/sl ";
+    public static final String SL = "/sl L";
 
-    public static String putFrameVal(String frame, String field) {
-        return PUT_FIELD + frame + SLASH + field + " I";
+    public static String putFrameVal(String frame, String field, String type) {
+        return PUT_FIELD + frame + SLASH + field + " " + type;
     }
 
     public static String changeFrames(String frame, String old_frame) {
@@ -71,5 +77,48 @@ public class Utils {
 
     public static String typeError(String operator) {
         return "illegal arguments types to " + operator + " operator";
+    }
+
+    public static void defFrameFile(String frame) {
+        try (PrintStream ps = new PrintStream(new File(genericPath + frame + ".j"))) {
+            CodeBlock code = new CodeBlock();
+
+            String a = ".class public " + frame + "\n" +
+                    ".super java/lang/Object\n" +
+                    ".field public sl Ljava/lang/Object;\n" +
+                    ".field public v0 Ljava/lang/Object;\n" +
+                    ".method public <init>()V\n" +
+                    "aload_0\n" +
+                    "invokenonvirtual java/lang/Object/<init>()V\n" +
+                    "return\n" +
+                    ".end method\n";
+
+            code.emit(a);
+            code.dump(ps);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void defRefFile(String refType, String type) {
+        try (PrintStream ps = new PrintStream(new File(genericPath + refType + ".j"))) {
+            CodeBlock code = new CodeBlock();
+
+            String a = ".class public " + refType + "\n" +
+                    ".super java/lang/Object\n" +
+                    ".field public v " + type + "\n" +
+                    ".method public <init>()V\n" +
+                    "aload_0\n" +
+                    "invokenonvirtual java/lang/Object/<init>()V\n" +
+                    "return\n" +
+                    ".end method\n";
+
+            code.emit(a);
+            code.dump(ps);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

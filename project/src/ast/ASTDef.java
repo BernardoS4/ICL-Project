@@ -1,7 +1,6 @@
 package ast;
 
 import static ast.Utils.ALOAD_3;
-import static ast.Utils.ASTORE_3;
 import static ast.Utils.FIELD_PREFIX;
 import static ast.Utils.FRAME_PREFIX;
 
@@ -12,6 +11,7 @@ public class ASTDef implements ASTNode {
 
     private ASTNode body;
     private Map<String, ASTNode> vars;
+    private Environment<IType> typeEnv;
 
     public ASTDef(Map<String, ASTNode> m, ASTNode body) {
         this.body = body;
@@ -32,35 +32,66 @@ public class ASTDef implements ASTNode {
     }
 
     public void compile(CodeBlock c, Environment<Coordinate> env) {
-        typecheck(new Environment<IType>(null, 0));
-        // def x1 = E1 … xn = En in Body end
+        typeEnv = new Environment<IType>(null, 0);
+        typecheck(typeEnv);
         env = env.beginScope();
         int currentLevel = env.depth();
         String frame = c.gensym(FRAME_PREFIX, currentLevel);
-        String old_frame = c.gensym(FRAME_PREFIX, currentLevel - 1);
+        Utils.defFrameFile(frame);
+        c.emit("new " + frame);
+        c.emit("dup");
+        c.emit("invokespecial " + frame + "/<init>()V");
+        c.emit("dup");
+        c.emit("aload_3");
+
+        String old_frame = "";
+        if (currentLevel == 0)
+            old_frame = "java/lang/Object";
+
+        else
+            old_frame = c.gensym(FRAME_PREFIX, currentLevel - 1);
+
+        c.emit("putfield " + frame + "/sl L" + old_frame + ";");
+        c.emit("astore_3");
+
         String field;
         int counter = 0;
+        IType type;
+        String sType = "";
 
         for (Entry<String, ASTNode> exp : vars.entrySet()) {
             c.emit(ALOAD_3);
             exp.getValue().compile(c, env);
+
+            type = typeEnv.find(exp.getKey());
+            if (type instanceof TypeInt)
+                sType = "I";
+            else if (type instanceof TypeBool)
+                sType = "Z";
+            else
+                sType = "Ljava/lang/Object;";
+
             field = c.gensym(FIELD_PREFIX, counter);
-            c.emit(Utils.putFrameVal(frame, field));
+            c.emit(Utils.putFrameVal(frame, field, sType));
             env.assoc(exp.getKey(), new Coordinate(env.depth(), field));
-            // counter++;
+            counter++;
         }
 
         body.compile(c, env);
-        // c.emit(ALOAD_3);
-        // c.emit(Utils.changeFrames(frame, old_frame));
-        // c.emit(ASTORE_3);
 
         env.endScope();
     }
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        // TODO Auto-generated method stub
-        return null;
+        typeEnv = e.beginScope();
+        IType v;
+        for (Entry<String, ASTNode> exp : vars.entrySet()) {
+            v = exp.getValue().typecheck(typeEnv);
+            typeEnv.assoc(exp.getKey(), v);
+        }
+        v = body.typecheck(e);
+        typeEnv.endScope();
+        return v;
     }
 }

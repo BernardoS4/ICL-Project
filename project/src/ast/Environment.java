@@ -16,7 +16,7 @@ public class Environment<X> {
     }
 
     public Environment<X> beginScope() {
-        return new Environment<X>(this, depth);
+        return new Environment<X>(this, depth + 1);
     }
 
     public Environment<X> endScope() {

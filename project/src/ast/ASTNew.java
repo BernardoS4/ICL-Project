@@ -42,12 +42,13 @@ public class ASTNew implements ASTNode {
                 typeJ += "bool";
             }
         }
+        Utils.defRefFile(refType, typeJ);
         code.emit("new ref_of_" + refType);
         code.emit("dup");
         code.emit("invokespecial ref_of_" + refType + "/<init>()V");
         code.emit("dup");
         val.compile(code, e);
-        code.emit("putfield ref_of_" + refType + "/ v " + typeJ);
+        code.emit("putfield ref_of_" + refType + "/v " + typeJ);
     }
 
     @Override

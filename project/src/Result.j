@@ -18,11 +18,22 @@ getstatic java/lang/System/out Ljava/io/PrintStream;
 aconst_null
 astore_3
 ; START
+new frame_0
+dup
+invokespecial frame_0/<init>()V
+dup
 aload_3
+putfield frame_0/sl Ljava/lang/Object;
+astore_3
+aload_3
+new ref_of_int
+dup
+invokespecial ref_of_int/<init>()V
+dup
+sipush 3
+putfield ref_of_int/v I
+putfield frame_0/v0 Ljava/lang/Object;
 sipush 2
-putfield frame_0/v0 I
-aload_3
-getfield frame_0/v0 I
 ; END
 ; convert to String;
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
