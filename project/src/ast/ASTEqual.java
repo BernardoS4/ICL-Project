@@ -46,7 +46,7 @@ public class ASTEqual implements ASTNode {
         if (v1 instanceof TypeBool && v2 instanceof TypeBool)
             return v1;
         else if (v1 instanceof TypeInt && v2 instanceof TypeInt)
-            return v1;
+            return new TypeBool(((TypeInt) v1).getVal() == ((TypeInt) v2).getVal());
         throw new RuntimeException(typeError("=="));
     }
 }

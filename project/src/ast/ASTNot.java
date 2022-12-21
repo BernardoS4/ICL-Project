@@ -26,8 +26,10 @@ public class ASTNot implements ASTNode {
         val.compile(code, e);
         code.emit("ifeq L1");
         code.emit("sipush 0");
+        code.emit("goto L2");
         code.emit("L1:");
         code.emit("sipush 1");
+        code.emit("L2:");
     }
 
     @Override
