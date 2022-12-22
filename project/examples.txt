@@ -1,0 +1,11 @@
+{let MAX = 10; let x = new MAX; let s = new 0; while !x>0 {s:=!s+!x; x:=!x-1}; print !s};;
+
+{let x = new 2; {let y = !x*10;print y}; print !x};;
+
+{let x = new 2; {let y = !x*10;print y}; print !x};;
+
+{let x = new 2; let y = new 10; let z = !x*!y+80; if z==100 {print (z-50)} {print 7}};;
+
+{let x = true; let y = ~x; print (x&&y)};;
+
+{let x = new 10; let y = !x + (x:= !x * 5 - 10); print y};;

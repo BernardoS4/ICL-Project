@@ -30,38 +30,35 @@ new ref_of_int
 dup
 invokespecial ref_of_int/<init>()V
 dup
-sipush 0
+sipush 10
 putfield ref_of_int/v I
 putfield frame_0/v0 Lref_of_int;
 aload_3
-sipush 10
-putfield frame_0/v1 I
 aload_3
-new ref_of_int
-dup
-invokespecial ref_of_int/<init>()V
-dup
-aload_3
-getfield frame_0/v1 I
-putfield ref_of_int/v I
-putfield frame_0/v2 Lref_of_int;
+getfield frame_0/v0 Lref_of_int;
+getfield ref_of_int/v I
 aload_3
 getfield frame_0/v0 Lref_of_int;
 dup
 aload_3
 getfield frame_0/v0 Lref_of_int;
 getfield ref_of_int/v I
-aload_3
-getfield frame_0/v2 Lref_of_int;
+sipush 5
+imul
+sipush 10
+isub
+putfield ref_of_int/v I
 getfield ref_of_int/v I
 iadd
-putfield ref_of_int/v I
-getfield ref_of_int/v I
-; END
-; convert to String;
+putfield frame_0/v1 I
+aload_3
+getfield frame_0/v1 I
+dup
+getstatic java/lang/System/out Ljava/io/PrintStream;
+swap
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
-; call println
 invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+; END
 return
 .end method
 

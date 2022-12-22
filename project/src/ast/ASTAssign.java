@@ -26,25 +26,12 @@ public class ASTAssign implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        // IType type = typecheck(new Environment<>(null, 0));
-        /*
-         * String refType = "";
-         * String typeJ = "";
-         * if (type instanceof TypeInt) {
-         * refType = "int";
-         * typeJ = "I";
-         * 
-         * } else if (type instanceof TypeBool) {
-         * refType = "bool";
-         * typeJ = "Z";
-         * }
-         */
+
         lhs.compile(code, e);
         code.emit("dup");
         rhs.compile(code, e);
         code.emit("putfield ref_of_" + refType + "/v " + typeJ);
         code.emit("getfield ref_of_" + refType + "/v " + typeJ);
-
     }
 
     @Override

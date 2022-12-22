@@ -31,7 +31,7 @@ public class Utils {
             "return\n" +
             ".end method\n";
 
-    public static final String genericPath = "/Users/nedzero/Documents/GitHub/ICL-Project/project/src/";
+    public static final String genericPath = "../";
     public static final String godsPath = "C:\\Users\\berna\\OneDrive\\Documentos\\GitHub\\ICL-Project\\project\\src\\";
 
     /**
@@ -77,7 +77,7 @@ public class Utils {
     }
 
     public static void defFrameFile(String frame, String oldFrame, String variables) {
-        try (PrintStream ps = new PrintStream(new File(godsPath + frame + ".j"))) {
+        try (PrintStream ps = new PrintStream(new File(genericPath + frame + ".j"))) {
             CodeBlock code = new CodeBlock();
 
             String a = ".class public " + frame + "\n" +
