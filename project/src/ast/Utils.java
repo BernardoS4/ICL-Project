@@ -65,7 +65,7 @@ public class Utils {
     }
 
     public static String changeFrames(String frame, String old_frame) {
-        return GET_FIELD + frame + SL + old_frame;
+        return GET_FIELD + frame + SL + old_frame + ";";
     }
 
     public static String getFieldVal(String old_frame, String valId, String type) {
@@ -80,13 +80,13 @@ public class Utils {
         return "illegal arguments types to " + operator + " operator";
     }
 
-    public static void defFrameFile(String frame, String variables) {
+    public static void defFrameFile(String frame, String oldFrame, String variables) {
         try (PrintStream ps = new PrintStream(new File(godsPath + frame + ".j"))) {
             CodeBlock code = new CodeBlock();
 
             String a = ".class public " + frame + "\n" +
                     ".super java/lang/Object\n" +
-                    ".field public sl Ljava/lang/Object;\n" +
+                    ".field public sl L" + oldFrame + "\n" +
                     variables +
                     ".method public <init>()V\n" +
                     "aload_0\n" +

@@ -40,13 +40,11 @@ public class ASTId implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType type = e.find(id);
-        IType r = type;
         if (type instanceof TypeInt) {
             typeJ = "I";
-
         } else if (type instanceof TypeBool) {
             typeJ = "Z";
-        } else {
+        } else if (type instanceof TypeRef) {
             typeJ = "Lref_of_";
             type = ((TypeRef) type).getVal();
 
@@ -61,7 +59,7 @@ public class ASTId implements ASTNode {
                 typeJ += "bool;";
             }
         }
-        return r;
+        return type;
     }
 
 }

@@ -17,11 +17,22 @@ public class ASTNew implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        IType v1 = typecheck(new Environment<IType>(null, 0));
+        Utils.defRefFile(refType, typeJ);
+        code.emit("new " + refType);
+        code.emit("dup");
+        code.emit("invokespecial " + refType + "/<init>()V");
+        code.emit("dup");
+        val.compile(code, e);
+        code.emit("putfield " + refType + "/v " + typeJ);
+    }
+
+    @Override
+    public IType typecheck(Environment<IType> e) {
+        IType v1 = val.typecheck(e);
 
         refType += "ref_of_";
         typeJ += "Lref_of_";
-        v1 = ((TypeRef) v1).getVal();
+        // v1 = ((TypeRef) v1).getVal();
 
         if (v1 instanceof TypeBool) {
             refType += "bool";
@@ -44,19 +55,6 @@ public class ASTNew implements ASTNode {
                 typeJ += "bool;";
             }
         }
-
-        Utils.defRefFile(refType, typeJ);
-        code.emit("new " + refType);
-        code.emit("dup");
-        code.emit("invokespecial " + refType + "/<init>()V");
-        code.emit("dup");
-        val.compile(code, e);
-        code.emit("putfield " + refType + "/v " + typeJ);
-    }
-
-    @Override
-    public IType typecheck(Environment<IType> e) {
-        IType v = val.typecheck(e);
-        return new TypeRef(v);
+        return new TypeRef(v1);
     }
 }

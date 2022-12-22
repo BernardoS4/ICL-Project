@@ -43,11 +43,11 @@ public class ASTIf implements ASTNode {
         IType v1 = cond.typecheck(e);
         if (v1 instanceof TypeBool) {
             if (((TypeBool) v1).getVal()) {
-                return lhs.typecheck(e);
+                v1 = lhs.typecheck(e);
             } else
-                return rhs.typecheck(e);
+                v1 = rhs.typecheck(e);
+            return v1;
         }
-
         throw new RuntimeException(typeError("if"));
     }
 }

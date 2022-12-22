@@ -42,10 +42,8 @@ public class ASTEqual implements ASTNode {
     public IType typecheck(Environment<IType> e) {
         IType v1 = lhs.typecheck(e);
         IType v2 = rhs.typecheck(e);
-        if (v1 instanceof TypeBool && v2 instanceof TypeBool)
-            return new TypeBool(((TypeBool) v1).getVal() == ((TypeBool) v2).getVal());
-        else if (v1 instanceof TypeInt && v2 instanceof TypeInt)
-            return new TypeBool(((TypeInt) v1).getVal() == ((TypeInt) v2).getVal());
+        if (v1.getClass().equals(v2.getClass()))
+            return new TypeBool(true);
         throw new RuntimeException(typeError("=="));
     }
 }

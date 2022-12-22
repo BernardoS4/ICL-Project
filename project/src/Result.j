@@ -30,24 +30,32 @@ new ref_of_int
 dup
 invokespecial ref_of_int/<init>()V
 dup
-sipush 10
+sipush 90
 putfield ref_of_int/v I
 putfield frame_0/v0 Lref_of_int;
 aload_3
 getfield frame_0/v0 Lref_of_int;
 getfield ref_of_int/v I
+sipush 10
+idiv
+sipush 3
+sipush 3
+imul
+isub
+ifne L1
+sipush 0
+goto L2
+L1:
+sipush 1
+L2:
+ifeq L9
 aload_3
 getfield frame_0/v0 Lref_of_int;
 getfield ref_of_int/v I
-sipush 10
-imul
-isub
-ifge L5
+goto L10
+L9:
 sipush 0
-goto L6
-L5:
-sipush 1
-L6:
+L10:
 ; END
 ; convert to String;
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
