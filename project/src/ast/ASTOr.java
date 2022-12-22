@@ -36,7 +36,7 @@ public class ASTOr implements ASTNode {
         IType v1 = lhs.typecheck(e);
         IType v2 = rhs.typecheck(e);
         if (v1 instanceof TypeBool || v2 instanceof TypeBool) {
-            return new TypeBool(((TypeBool) v1).getVal() || ((TypeBool) v2).getVal());
+            return new TypeBool(true);
         }
         throw new RuntimeException(typeError("||"));
     }

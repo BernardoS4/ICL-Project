@@ -32,7 +32,6 @@ public class ASTNew implements ASTNode {
 
         refType += "ref_of_";
         typeJ += "Lref_of_";
-        // v1 = ((TypeRef) v1).getVal();
 
         if (v1 instanceof TypeBool) {
             refType += "bool";

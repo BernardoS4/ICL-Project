@@ -43,7 +43,7 @@ public class ASTGequals implements ASTNode {
         if (v1 instanceof TypeInt) {
             IType v2 = rhs.typecheck(e);
             if (v2 instanceof TypeInt)
-                return new TypeBool(((TypeInt) v1).getVal() >= ((TypeInt) v2).getVal());
+                return new TypeBool(true);
         }
         throw new RuntimeException(typeError(">="));
     }

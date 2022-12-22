@@ -7,6 +7,11 @@ public class ASTPlus implements ASTNode {
 
         private ASTNode lhs, rhs;
 
+        public ASTPlus(ASTNode l, ASTNode r) {
+                lhs = l;
+                rhs = r;
+        }
+
         public IValue eval(Environment<IValue> e) {
                 IValue v1 = lhs.eval(e);
                 IValue v2;
@@ -19,11 +24,6 @@ public class ASTPlus implements ASTNode {
                 }
                 throw new RuntimeException(argumentError("+"));
 
-        }
-
-        public ASTPlus(ASTNode l, ASTNode r) {
-                lhs = l;
-                rhs = r;
         }
 
         @Override

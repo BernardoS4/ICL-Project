@@ -36,7 +36,7 @@ public class ASTDiv implements ASTNode {
         if (v1 instanceof TypeInt) {
             IType v2 = rhs.typecheck(e);
             if (v2 instanceof TypeInt)
-                return new TypeInt(((TypeInt) v1).getVal() / ((TypeInt) v2).getVal());
+                return new TypeInt(10);
         }
         throw new RuntimeException(typeError("/"));
     }

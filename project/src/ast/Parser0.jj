@@ -1,8 +1,8 @@
 PARSER_BEGIN(Parser)
 
 package ast;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /** ID lister. */
@@ -206,7 +206,8 @@ ASTNode Term() :
 ASTNode Fact() :
 { Token n; 
   ASTNode t, t2, t3;
-  Map<String,ASTNode> m;}
+  List<Entry> l;
+  Entry entry;}
 {
    ( n=<NUM> { t = new ASTNum(Integer.parseInt(n.image)); } 
     | n=<Id> 	{ t = new ASTId(n.image); }
@@ -219,9 +220,11 @@ ASTNode Fact() :
     | <PRINT> t=Fact() {t = new ASTPrint(t);}
     | <IF> t=Seq() <LBRA> t2=Seq() <RBRA> <LBRA> t3=Seq() <RBRA> {	t =	new	ASTIf(t, t2, t3);	}
     | <WHILE> t=Seq() <LBRA> t2 = Seq() <RBRA> {	t =	new	ASTWhile(t, t2);	}
-		|	<LBRA> {	m	=	new	HashMap();	}	
-								(	<LET>	n=<Id> <EQ> t=Exp()	<SCN>	{	m.put(n.image,t);} )	+	t=Seq() <RBRA>
-					{	t =	new	ASTDef(m, t);	}
+		|	<LBRA> {	l = new ArrayList<Entry>();	}	
+								(	<LET>	n=<Id> <EQ> t=Exp()	<SCN>	{	
+                  entry = new Entry(n.image, t);
+                  l.add(entry); } )	+	t=Seq() <RBRA>
+					{	t =	new	ASTDef(l, t);	}
   )
     { return t; } 
 }

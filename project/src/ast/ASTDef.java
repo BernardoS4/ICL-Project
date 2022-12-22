@@ -4,28 +4,29 @@ import static ast.Utils.ALOAD_3;
 import static ast.Utils.FIELD_PREFIX;
 import static ast.Utils.FRAME_PREFIX;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ASTDef implements ASTNode {
 
     private ASTNode body;
-    private Map<String, ASTNode> vars;
+    // private Map<String, ASTNode> vars;
     private Environment<IType> typeEnv;
-    private Map<String, String> sTypes;
+    List<String> sTypes;
+    List<Entry> vars;
+    Entry entry;
 
-    public ASTDef(Map<String, ASTNode> m, ASTNode body) {
+    public ASTDef(List<Entry> l, ASTNode body) {
         this.body = body;
-        this.vars = m;
-        this.sTypes = new HashMap<>();
+        this.vars = l;
+        this.sTypes = new ArrayList<>();
     }
 
     public IValue eval(Environment<IValue> e) {
 
         e = e.beginScope();
         IValue v;
-        for (Entry<String, ASTNode> exp : vars.entrySet()) {
+        for (Entry exp : vars) {
             v = exp.getValue().eval(e);
             e.assoc(exp.getKey(), v);
         }
@@ -35,8 +36,6 @@ public class ASTDef implements ASTNode {
     }
 
     public void compile(CodeBlock c, Environment<Coordinate> env) {
-        // typeEnv = new Environment<IType>(null, 0);
-        // typecheck(typeEnv);
         env = env.beginScope();
         int currentLevel = env.depth();
         String frame = c.gensym(FRAME_PREFIX, currentLevel);
@@ -58,35 +57,13 @@ public class ASTDef implements ASTNode {
 
         String field;
         int counter = 0;
-        IType type;
         String sType = "";
         String variables = "";
 
-        for (Entry<String, ASTNode> exp : vars.entrySet()) {
+        for (Entry exp : vars) {
             c.emit(ALOAD_3);
             exp.getValue().compile(c, env);
-
-            /*
-             * type = typeEnv.find(exp.getKey());
-             * if (type instanceof TypeInt)
-             * sType = "I";
-             * else if (type instanceof TypeBool)
-             * sType = "Z";
-             * else {
-             * sType = "L";
-             * while (type instanceof TypeRef) {
-             * sType += "ref_of_";
-             * type = ((TypeRef) type).getVal();
-             * }
-             * if (type instanceof TypeInt) {
-             * sType += "int";
-             * } else {
-             * sType += "bool";
-             * }
-             * sType += ";";
-             * }
-             */
-            sType = sTypes.get(exp.getKey());
+            sType = sTypes.get(counter);
             variables += ".field public v" + counter + " " + sType + "\n";
             field = c.gensym(FIELD_PREFIX, counter);
             c.emit(Utils.putFrameVal(frame, field, sType));
@@ -95,6 +72,9 @@ public class ASTDef implements ASTNode {
         }
         Utils.defFrameFile(frame, old_frame, variables);
         body.compile(c, env);
+        c.emit(ALOAD_3);
+        c.emit("getfield " + frame + "/sl L" + old_frame);
+        c.emit("astore_3");
         env.endScope();
     }
 
@@ -103,7 +83,7 @@ public class ASTDef implements ASTNode {
         typeEnv = e.beginScope();
         IType v;
         String sType = "";
-        for (Entry<String, ASTNode> exp : vars.entrySet()) {
+        for (Entry exp : vars) {
             v = exp.getValue().typecheck(typeEnv);
             typeEnv.assoc(exp.getKey(), v);
 
@@ -124,7 +104,7 @@ public class ASTDef implements ASTNode {
                 }
                 sType += ";";
             }
-            sTypes.put(exp.getKey(), sType);
+            sTypes.add(sType);
         }
         v = body.typecheck(typeEnv);
         typeEnv.endScope();
