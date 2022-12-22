@@ -31,7 +31,6 @@ public class ASTAssign implements ASTNode {
         rhs.compile(code, e);
         code.emit("putfield ref_of_" + refType + "/v " + typeJ);
         code.emit("getfield ref_of_" + refType + "/v " + typeJ);
-
     }
 
     @Override
