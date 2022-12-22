@@ -5,6 +5,7 @@ import static ast.Utils.*;
 public class ASTId implements ASTNode {
 
     String id;
+    String typeJ;
 
     public ASTId(String id) {
         this.id = id;
@@ -32,12 +33,21 @@ public class ASTId implements ASTNode {
             currentLevel--;
         }
         String valId = c.getId();
-        code.emit(Utils.getFieldVal(prev_frame, valId));
+
+        code.emit(Utils.getFieldVal(prev_frame, valId, typeJ));
     }
 
     @Override
     public IType typecheck(Environment<IType> e) {
-        return e.find(id);
+        IType type = e.find(id);
+        if (type instanceof TypeInt) {
+            typeJ = "I";
+
+        } else if (type instanceof TypeBool) {
+            typeJ = "Z";
+        } else
+            typeJ = "Ljava/lang/Object;";
+        return type;
     }
 
 }

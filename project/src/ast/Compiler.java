@@ -11,7 +11,7 @@ public class Compiler {
         Parser parser = new Parser(System.in);
         CodeBlock code = new CodeBlock();
         Environment<Coordinate> env = new Environment<>(null, -1);
-        Environment<IType> e = new Environment<>(null, 0);
+        Environment<IType> e = new Environment<>(null, -1);
         String bennyPath = "C:\\Users\\berna\\OneDrive\\Documentos\\GitHub\\ICL-Project\\project\\src\\Result.j";
         String alexPath = "/Users/nedzero/Documents/GitHub/ICL-Project/project/src/Result.j";
 
@@ -19,7 +19,7 @@ public class Compiler {
             try {
                 ASTNode ast = parser.Start();
                 PrintStream ps = new PrintStream(
-                        new File(alexPath));
+                        new File(bennyPath));
                 code.emit(MAIN_START_CODE);
                 ast.typecheck(e);
                 ast.compile(code, env);

@@ -5,6 +5,8 @@ import static ast.Utils.typeError;
 public class ASTDeref implements ASTNode {
 
     ASTNode val;
+    String refType = "";
+    String typeJ = "";
 
     public ASTDeref(ASTNode val) {
         this.val = val;
@@ -21,17 +23,6 @@ public class ASTDeref implements ASTNode {
 
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
-        IType type = typecheck(new Environment<IType>(null, 0));
-        String refType = "";
-        String typeJ = "";
-        if (type instanceof TypeInt) {
-            refType = "int";
-            typeJ = "I";
-
-        } else if (type instanceof TypeBool) {
-            refType = "bool";
-            typeJ = "Z";
-        }
         val.compile(code, e);
         code.emit("getfield ref_of_" + refType + "/v " + typeJ);
     }
@@ -41,9 +32,19 @@ public class ASTDeref implements ASTNode {
         IType v1 = val.typecheck(e);
 
         if (v1 instanceof TypeRef) {
-            IType refType = ((TypeRef) v1).getVal();
-            return refType;
+            v1 = ((TypeRef) v1).getVal();
+
+            if (v1 instanceof TypeInt) {
+                refType = "int";
+                typeJ = "I";
+
+            } else if (v1 instanceof TypeBool) {
+                refType = "bool";
+                typeJ = "Z";
+            }
+            return v1;
         }
+
         throw new RuntimeException(typeError("!"));
     }
 }

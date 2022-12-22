@@ -37,7 +37,7 @@ public class ASTDef implements ASTNode {
         env = env.beginScope();
         int currentLevel = env.depth();
         String frame = c.gensym(FRAME_PREFIX, currentLevel);
-        Utils.defFrameFile(frame);
+
         c.emit("new " + frame);
         c.emit("dup");
         c.emit("invokespecial " + frame + "/<init>()V");
@@ -47,7 +47,6 @@ public class ASTDef implements ASTNode {
         String old_frame = "";
         if (currentLevel == 0)
             old_frame = "java/lang/Object";
-
         else
             old_frame = c.gensym(FRAME_PREFIX, currentLevel - 1);
 
@@ -58,7 +57,7 @@ public class ASTDef implements ASTNode {
         int counter = 0;
         IType type;
         String sType = "";
-
+        String variables = "";
         for (Entry<String, ASTNode> exp : vars.entrySet()) {
             c.emit(ALOAD_3);
             exp.getValue().compile(c, env);
@@ -71,14 +70,14 @@ public class ASTDef implements ASTNode {
             else
                 sType = "Ljava/lang/Object;";
 
+            variables += ".field public v" + counter + " " + sType + "\n";
             field = c.gensym(FIELD_PREFIX, counter);
             c.emit(Utils.putFrameVal(frame, field, sType));
             env.assoc(exp.getKey(), new Coordinate(env.depth(), field));
             counter++;
         }
-
+        Utils.defFrameFile(frame, variables);
         body.compile(c, env);
-
         env.endScope();
     }
 
@@ -90,7 +89,7 @@ public class ASTDef implements ASTNode {
             v = exp.getValue().typecheck(typeEnv);
             typeEnv.assoc(exp.getKey(), v);
         }
-        v = body.typecheck(e);
+        v = body.typecheck(typeEnv);
         typeEnv.endScope();
         return v;
     }

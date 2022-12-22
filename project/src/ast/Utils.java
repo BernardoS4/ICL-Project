@@ -36,6 +36,7 @@ public class Utils {
             ".end method\n";
 
     public static final String genericPath = "/Users/nedzero/Documents/GitHub/ICL-Project/project/src/";
+    public static final String godsPath = "C:\\Users\\berna\\OneDrive\\Documentos\\GitHub\\ICL-Project\\project\\src\\";
 
     /**
      * 
@@ -67,8 +68,8 @@ public class Utils {
         return GET_FIELD + frame + SL + old_frame;
     }
 
-    public static String getFieldVal(String old_frame, String valId) {
-        return GET_FIELD + old_frame + "/" + valId + " I";
+    public static String getFieldVal(String old_frame, String valId, String type) {
+        return GET_FIELD + old_frame + "/" + valId + " " + type;
     }
 
     public static String argumentError(String operator) {
@@ -79,14 +80,14 @@ public class Utils {
         return "illegal arguments types to " + operator + " operator";
     }
 
-    public static void defFrameFile(String frame) {
-        try (PrintStream ps = new PrintStream(new File(genericPath + frame + ".j"))) {
+    public static void defFrameFile(String frame, String variables) {
+        try (PrintStream ps = new PrintStream(new File(godsPath + frame + ".j"))) {
             CodeBlock code = new CodeBlock();
 
             String a = ".class public " + frame + "\n" +
                     ".super java/lang/Object\n" +
                     ".field public sl Ljava/lang/Object;\n" +
-                    ".field public v0 Ljava/lang/Object;\n" +
+                    variables +
                     ".method public <init>()V\n" +
                     "aload_0\n" +
                     "invokenonvirtual java/lang/Object/<init>()V\n" +
@@ -102,7 +103,7 @@ public class Utils {
     }
 
     public static void defRefFile(String refType, String type) {
-        try (PrintStream ps = new PrintStream(new File(genericPath + refType + ".j"))) {
+        try (PrintStream ps = new PrintStream(new File(godsPath + refType + ".j"))) {
             CodeBlock code = new CodeBlock();
 
             String a = ".class public " + refType + "\n" +
