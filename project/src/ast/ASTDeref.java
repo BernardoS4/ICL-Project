@@ -31,31 +31,30 @@ public class ASTDeref implements ASTNode {
     public IType typecheck(Environment<IType> e) {
         IType v1 = val.typecheck(e);
 
-        // if (v1 instanceof TypeRef) {
-        // v1 = ((TypeRef) v1).getVal();
+        if (v1 instanceof TypeRef) {
+            v1 = ((TypeRef) v1).getVal();
 
-        if (v1 instanceof TypeInt) {
-            refType = "int";
-            typeJ = "I";
-        } else if (v1 instanceof TypeBool) {
-            refType = "bool";
-            typeJ = "Z";
-        } else {
-            while (v1 instanceof TypeRef) {
-                refType += "ref_of_";
-                typeJ += "ref_of_";
-                v1 = ((TypeRef) v1).getVal();
-            }
             if (v1 instanceof TypeInt) {
-                refType += "int";
-                typeJ += "int;";
+                refType = "int";
+                typeJ = "I";
+            } else if (v1 instanceof TypeBool) {
+                refType = "bool";
+                typeJ = "Z";
             } else {
-                refType += "bool";
-                typeJ += "bool;";
+                while (v1 instanceof TypeRef) {
+                    refType += "ref_of_";
+                    typeJ += "ref_of_";
+                }
+                if (v1 instanceof TypeInt) {
+                    refType += "int";
+                    typeJ += "int;";
+                } else {
+                    refType += "bool";
+                    typeJ += "bool;";
+                }
             }
+            return v1;
         }
-        return v1;
-        // }
-        // throw new RuntimeException(typeError("!"));
+        throw new RuntimeException(typeError("!"));
     }
 }
