@@ -18,19 +18,19 @@ public class ASTNew implements ASTNode {
     @Override
     public void compile(CodeBlock code, Environment<Coordinate> e) {
         IType v1 = typecheck(new Environment<IType>(null, 0));
+
+        refType += "ref_of_";
+        typeJ += "Lref_of_";
         v1 = ((TypeRef) v1).getVal();
 
         if (v1 instanceof TypeBool) {
             refType += "bool";
-            typeJ += "Z";
+            typeJ = "Z";
         } else if (v1 instanceof TypeInt) {
             refType += "int";
             typeJ = "I";
         } else {
-
-            refType += "ref_of_";
-            typeJ += "Lref_of_";
-
+            v1 = ((TypeRef) v1).getVal();
             while (v1 instanceof TypeRef) {
                 refType += "ref_of_";
                 typeJ += "ref_of_";
@@ -46,12 +46,12 @@ public class ASTNew implements ASTNode {
         }
 
         Utils.defRefFile(refType, typeJ);
-        code.emit("new ref_of_" + refType);
+        code.emit("new " + refType);
         code.emit("dup");
-        code.emit("invokespecial ref_of_" + refType + "/<init>()V");
+        code.emit("invokespecial " + refType + "/<init>()V");
         code.emit("dup");
         val.compile(code, e);
-        code.emit("putfield ref_of_" + refType + "/v " + typeJ);
+        code.emit("putfield " + refType + "/v " + typeJ);
     }
 
     @Override

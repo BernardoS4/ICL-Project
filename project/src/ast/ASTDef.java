@@ -67,8 +67,19 @@ public class ASTDef implements ASTNode {
                 sType = "I";
             else if (type instanceof TypeBool)
                 sType = "Z";
-            else
-                sType = "Ljava/lang/Object;";
+            else {
+                sType = "L";
+                while (type instanceof TypeRef) {
+                    sType += "ref_of_";
+                    type = ((TypeRef) type).getVal();
+                }
+                if (type instanceof TypeInt) {
+                    sType += "int";
+                } else {
+                    sType += "bool";
+                }
+                sType += ";";
+            }
 
             variables += ".field public v" + counter + " " + sType + "\n";
             field = c.gensym(FIELD_PREFIX, counter);

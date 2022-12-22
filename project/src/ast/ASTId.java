@@ -5,7 +5,7 @@ import static ast.Utils.*;
 public class ASTId implements ASTNode {
 
     String id;
-    String typeJ;
+    String typeJ = "";
 
     public ASTId(String id) {
         this.id = id;
@@ -45,8 +45,22 @@ public class ASTId implements ASTNode {
 
         } else if (type instanceof TypeBool) {
             typeJ = "Z";
-        } else
-            typeJ = "Ljava/lang/Object;";
+        } else {
+            typeJ = "Lref_of_";
+            type = ((TypeRef) type).getVal();
+
+            while (type instanceof TypeRef) {
+                typeJ += "ref_of_";
+                type = ((TypeRef) type).getVal();
+            }
+
+            if (type instanceof TypeInt) {
+                typeJ += "int;";
+            } else {
+                typeJ += "bool;";
+            }
+        }
+
         return type;
     }
 
