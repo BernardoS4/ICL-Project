@@ -1,0 +1,1 @@
+cd src/ast; javacc Parser0.jj; javac *.java 

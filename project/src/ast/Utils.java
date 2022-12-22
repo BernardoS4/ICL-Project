@@ -28,10 +28,6 @@ public class Utils {
             "; START";
 
     public static final String MAIN_END_CODE = "; END\n" +
-            "; convert to String;\n" +
-            "invokestatic java/lang/String/valueOf(I)Ljava/lang/String;\n" +
-            "; call println\n" +
-            "invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n" +
             "return\n" +
             ".end method\n";
 
@@ -103,7 +99,7 @@ public class Utils {
     }
 
     public static void defRefFile(String refType, String type) {
-        try (PrintStream ps = new PrintStream(new File(godsPath + refType + ".j"))) {
+        try (PrintStream ps = new PrintStream(new File(genericPath + refType + ".j"))) {
             CodeBlock code = new CodeBlock();
 
             String a = ".class public " + refType + "\n" +

@@ -37,13 +37,10 @@ public class ASTWhile implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = cond.typecheck(e);
-        IType v2 = v1;
         if (v1 instanceof TypeBool) {
-            while (((TypeBool) v1).getVal()) {
-                v2 = exp.typecheck(e);
-                v1 = cond.typecheck(e);
-            }
-            return v2;
+            exp.typecheck(e);
+
+            return new TypeBool(false);
         }
         throw new RuntimeException("illegal arguments types to while operator");
     }
