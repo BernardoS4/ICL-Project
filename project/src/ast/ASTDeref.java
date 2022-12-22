@@ -5,8 +5,8 @@ import static ast.Utils.typeError;
 public class ASTDeref implements ASTNode {
 
     ASTNode val;
-    String refType = "";
-    String typeJ = "";
+    String refType;
+    String typeJ;
 
     public ASTDeref(ASTNode val) {
         this.val = val;
@@ -30,7 +30,9 @@ public class ASTDeref implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType v1 = val.typecheck(e);
-
+        typeJ = "";
+        refType = "";
+        v1 = ((TypeRef) v1).getVal();
         if (v1 instanceof TypeInt) {
             refType = "int";
             typeJ = "I";
@@ -40,6 +42,7 @@ public class ASTDeref implements ASTNode {
             typeJ = "Z";
             return v1;
         } else {
+
             while (v1 instanceof TypeRef) {
                 refType += "ref_of_";
                 typeJ += "ref_of_";

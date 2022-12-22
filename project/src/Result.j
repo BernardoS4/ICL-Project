@@ -26,18 +26,28 @@ aload_3
 putfield frame_0/sl Ljava/lang/Object;
 astore_3
 aload_3
-new ref_of_bool
+new ref_of_int
 dup
-invokespecial ref_of_bool/<init>()V
+invokespecial ref_of_int/<init>()V
 dup
-sipush 1
-putfield ref_of_bool/v Z
-putfield frame_0/v0 Lref_of_bool;
+sipush 10
+putfield ref_of_int/v I
+putfield frame_0/v0 Lref_of_int;
 aload_3
-getfield frame_0/v0 Lref_of_bool;
-getfield ref_of_bool/v Z
+getfield frame_0/v0 Lref_of_int;
+getfield ref_of_int/v I
+aload_3
+getfield frame_0/v0 Lref_of_int;
+getfield ref_of_int/v I
+sipush 10
+imul
+isub
+ifge L5
 sipush 0
-iand
+goto L6
+L5:
+sipush 1
+L6:
 ; END
 ; convert to String;
 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;

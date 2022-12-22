@@ -40,6 +40,7 @@ public class ASTId implements ASTNode {
     @Override
     public IType typecheck(Environment<IType> e) {
         IType type = e.find(id);
+        IType r = type;
         if (type instanceof TypeInt) {
             typeJ = "I";
 
@@ -60,8 +61,7 @@ public class ASTId implements ASTNode {
                 typeJ += "bool;";
             }
         }
-
-        return type;
+        return r;
     }
 
 }
